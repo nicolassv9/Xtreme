@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XTREME — Suplementación de Élite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:ital,wght@0,700;0,800;0,900;1,800&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --black: #000000;
+      --dark: #0f0f0f;
+      --card: #141414;
+      --border: #262626;
+      --border-hover: #404040;
+      --red: #D91E18;
+      --red-hover: #b51713;
+      --white: #FFFFFF;
+      --muted: #a0a0a0;
+      --font-display: 'Montserrat', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-weight: 400;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* UTILS */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 16px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      color: var(--white);
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .nav-logo span {
+      color: var(--red);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--white);
+      text-decoration: none;
+      position: relative;
+      padding-bottom: 4px;
+      transition: color 0.2s;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--red);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .nav-links a:hover::after {
+      transform: scaleX(1);
+    }
+
+    .nav-cta {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      background: var(--white);
+      color: var(--black);
+      padding: 12px 24px;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .nav-cta:hover {
+      background: var(--red);
+      color: var(--white);
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      padding: 120px 48px 60px;
+      position: relative;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, var(--black) 100%),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" fill="%230f0f0f"/></svg>') center/cover;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 16px;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(4rem, 8vw, 7.5rem);
+      font-weight: 900;
+      font-style: italic;
+      line-height: 0.9;
+      color: var(--white);
+      margin-bottom: 24px;
+      text-transform: uppercase;
+    }
+
+    .hero-title .accent {
+      color: var(--red);
+      display: block;
+    }
+
+    .hero-subtitle {
+      font-family: var(--font-body);
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: var(--muted);
+      max-width: 450px;
+      margin-bottom: 40px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .btn-primary {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      background: var(--white);
+      color: var(--black);
+      padding: 16px 36px;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary:hover {
+      background: var(--red);
+      color: var(--white);
+    }
+
+    .btn-outline {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      background: transparent;
+      color: var(--white);
+      padding: 14px 36px;
+      border: 2px solid var(--white);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-outline:hover {
+      background: var(--white);
+      color: var(--black);
+    }
+
+    /* BRAND BAR */
+    .brand-bar {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0;
+      overflow: hidden;
+      background: var(--dark);
+    }
+
+    .brand-track {
+      display: flex;
+      gap: 48px;
+      animation: marquee 20s linear infinite;
+      white-space: nowrap;
+    }
+
+    .brand-item {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .brand-item::after {
+      content: '';
+      display: block;
+      width: 6px;
+      height: 6px;
+      background: var(--red);
+      border-radius: 50%;
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* SECTION COMMON */
+    section {
+      padding: 100px 48px;
+    }
+
+    .section-label {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 4vw, 4rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      line-height: 1;
+      margin-bottom: 24px;
+    }
+
+    /* PRODUCTS */
+    .products-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 48px;
+    }
+
+    .products-filter {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 8px 20px;
+      background: var(--dark);
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+      background: var(--white);
+      color: var(--black);
+      border-color: var(--white);
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .product-card {
+      background: var(--black);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-card:hover .product-img-wrap {
+      border-color: var(--red);
+    }
+
+    .product-img-wrap {
+      height: 340px;
+      background: var(--card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border: 1px solid var(--border);
+      transition: border-color 0.3s;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .product-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .prod-svg {
+      width: 160px;
+      height: 220px;
+      transition: transform 0.4s ease;
+    }
+
+    .product-card:hover .prod-svg {
+      transform: translateY(-6px) scale(1.03);
+    }
+
+    .product-card:hover .product-img-wrap img {
+      transform: scale(1.04);
+    }
+
+    .product-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      background: var(--white);
+      color: var(--black);
+      padding: 4px 10px;
+      border-radius: 2px;
+      z-index: 2;
+    }
+
+    .product-badge.sale {
+      background: var(--red);
+      color: var(--white);
+    }
+
+    .product-info {
+      padding: 0 4px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .product-category {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .product-name {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .product-price {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-top: auto;
+    }
+
+    .product-price span {
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    /* CATEGORIES */
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-auto-rows: 300px;
+      gap: 16px;
+      margin-top: 48px;
+    }
+
+    .cat-card {
+      position: relative;
+      overflow: hidden;
+      background: var(--card);
+      display: flex;
+      align-items: flex-end;
+      padding: 32px;
+      border: 1px solid var(--border);
+      transition: border-color 0.3s;
+    }
+
+    .cat-card:hover {
+      border-color: var(--border-hover);
+    }
+
+    .cat-card.large {
+      grid-column: span 8;
+      grid-row: span 2;
+    }
+
+    .cat-card.medium {
+      grid-column: span 4;
+    }
+
+    /* Cat background: full-bleed image with dark overlay */
+    .cat-bg {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .cat-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.28;
+      transition: transform 0.7s ease, opacity 0.4s ease;
+      filter: grayscale(40%);
+    }
+
+    .cat-card:hover .cat-bg img {
+      transform: scale(1.06);
+      opacity: 0.38;
+    }
+
+    /* Gradient overlay for readability */
+    .cat-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 60%);
+    }
+
+    .cat-info {
+      position: relative;
+      z-index: 2;
+    }
+
+    .cat-label {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 8px;
+    }
+
+    .cat-name {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .cat-sub {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    /* PHILOSOPHY */
+    .philosophy {
+      background: var(--dark);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      padding: 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .phil-visual {
+      background: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      min-height: 600px;
+      border-right: 1px solid var(--border);
+    }
+
+    .phil-visual-text {
+      font-family: var(--font-display);
+      font-size: 6rem;
+      font-weight: 900;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--border);
+      text-transform: uppercase;
+      transform: rotate(-90deg);
+      position: absolute;
+      white-space: nowrap;
+    }
+
+    .phil-img-placeholder {
+      width: 300px;
+      height: 400px;
+      position: relative;
+      z-index: 2;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .phil-img-placeholder img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(20%);
+    }
+
+    .phil-content {
+      padding: 100px 72px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .phil-quote {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 900;
+      line-height: 1.1;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+
+    .phil-quote em {
+      color: var(--red);
+      font-style: italic;
+    }
+
+    .phil-text {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 40px;
+      max-width: 480px;
+    }
+
+    .phil-pillars {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .pillar {
+      display: flex;
+      gap: 20px;
+    }
+
+    .pillar-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--white);
+      color: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .pillar-name {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .pillar-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* HOW TO BUY */
+    .buy-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .buy-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 40px 32px;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+
+    .buy-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-hover);
+    }
+    .buy-icon {
+  width: 58px;
+  height: 58px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  background: rgba(255,255,255,0.02);
+  transition: all 0.3s ease;
+}
+
+.buy-icon svg {
+  width: 28px;
+  height: 28px;
+  color: var(--white);
+  transition: all 0.3s ease;
+}
+
+.buy-card:hover .buy-icon {
+  border-color: var(--red);
+  background: rgba(217, 30, 24, 0.08);
+  transform: translateY(-2px);
+}
+
+.buy-card:hover .buy-icon svg {
+  color: var(--red);
+}
+
+    }
+
+    .buy-title {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .buy-desc {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    /* TESTIMONIALS */
+    .testimonials {
+      background: var(--dark);
+      border-top: 1px solid var(--border);
+    }
+
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .testi-card {
+      background: var(--black);
+      border: 1px solid var(--border);
+      padding: 40px 32px;
+    }
+
+    .testi-stars {
+      color: var(--red);
+      font-size: 1rem;
+      margin-bottom: 16px;
+      letter-spacing: 2px;
+    }
+
+    .testi-quote {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    .testi-author {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .testi-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .testi-name {
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+    }
+
+    .testi-role {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* CTA BANNER */
+    .cta-banner {
+      background: var(--white);
+      color: var(--black);
+      padding: 100px 48px;
+      text-align: center;
+    }
+
+    .cta-title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 6vw, 6rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      line-height: 1;
+      margin-bottom: 24px;
+    }
+
+    .cta-sub {
+      font-size: 1.1rem;
+      color: #444;
+      max-width: 500px;
+      margin: 0 auto 40px;
+      line-height: 1.6;
+    }
+
+    .btn-dark {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      background: var(--black);
+      color: var(--white);
+      padding: 16px 40px;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-dark:hover {
+      background: var(--red);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--black);
+      border-top: 1px solid var(--border);
+      padding: 80px 48px 40px;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 64px;
+    }
+
+    .footer-brand-name {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .footer-tagline {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 32px;
+      max-width: 300px;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 16px;
+    }
+
+    .social-btn {
+      width: 40px;
+      height: 40px;
+      background: var(--card);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .social-btn:hover {
+      background: var(--red);
+      color: var(--white);
+    }
+
+    .footer-col-title {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-links a {
+      font-size: 0.9rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--white);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding: 24px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-copy {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .cat-card.large {
+        grid-column: span 12;
+        grid-row: auto;
+      }
+
+      .cat-card.medium {
+        grid-column: span 6;
+      }
+
+      footer {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        padding: 16px 24px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      section {
+        padding: 80px 24px;
+      }
+
+      .hero {
+        padding: 120px 24px 60px;
+      }
+
+      .philosophy {
+        grid-template-columns: 1fr;
+      }
+
+      .phil-visual {
+        display: none;
+      }
+
+      .phil-content {
+        padding: 60px 24px;
+      }
+
+      .buy-grid,
+      .testi-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cat-card.medium {
+        grid-column: span 12;
+      }
+
+      footer {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">XTREME<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="#productos">Productos</a></li>
+      <li><a href="#filosofia">Filosofía</a></li>
+      <li><a href="#comprar">Cómo comprar</a></li>
+      <li><a href="#testimonios">Resultados</a></li>
+    </ul>
+    <button class="nav-cta">Tienda</button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content reveal">
+      <div class="hero-eyebrow">Rendimiento sin excusas</div>
+      <h1 class="hero-title">
+        Desata tu <span class="accent">potencial</span>
+      </h1>
+      <p class="hero-subtitle">
+        Nutrición deportiva diseñada para atletas que exigen más. Sin rellenos, dosis reales, resultados extremos.
+      </p>
+      <div class="hero-actions">
+        <a href="#productos" class="btn-primary">Ver Catálogo</a>
+        <a href="#filosofia" class="btn-outline">Nuestra Filosofía</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- BRAND BAR -->
+  <div class="brand-bar">
+    <div class="brand-track">
+      <span class="brand-item">Proteína Whey</span>
+      <span class="brand-item">Creatina Monohidrato</span>
+      <span class="brand-item">Colágeno Marino</span>
+      <span class="brand-item">Vitamina D3 + K2</span>
+      <span class="brand-item">Pre-Workout</span>
+      <span class="brand-item">BCAA's</span>
+      <span class="brand-item">Omega 3</span>
+      <span class="brand-item">Multivitamínico</span>
+      <span class="brand-item">Proteína Whey</span>
+      <span class="brand-item">Creatina Monohidrato</span>
+      <span class="brand-item">Colágeno Marino</span>
+      <span class="brand-item">Vitamina D3 + K2</span>
+      <span class="brand-item">Pre-Workout</span>
+      <span class="brand-item">BCAA's</span>
+      <span class="brand-item">Omega 3</span>
+      <span class="brand-item">Multivitamínico</span>
+    </div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <section class="products" id="productos">
+    <div class="products-header">
+      <div>
+        <div class="section-label reveal">Catálogo Oficial</div>
+        <h2 class="section-title reveal">Lo Esencial</h2>
+      </div>
+      <div class="products-filter reveal">
+        <button class="filter-btn active">Todos</button>
+        <button class="filter-btn">Proteína</button>
+        <button class="filter-btn">Creatina</button>
+        <button class="filter-btn">Bienestar</button>
+      </div>
+    </div>
+
+    <div class="products-grid">
+
+      <!-- Proteína Whey -->
+      <div class="product-card reveal">
+        <div class="product-img-wrap">
+          <div class="product-badge sale">Top Ventas</div>
+          <img src="img_proteina345.jpg" alt="Whey Gold Protein" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <svg class="prod-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 260" style="display:none">
+            <rect x="50" y="55" width="100" height="165" rx="6" fill="#1c1c1c" stroke="#2a2a2a" stroke-width="1.5"/>
+            <rect x="44" y="40" width="112" height="22" rx="4" fill="#D91E18"/>
+            <rect x="62" y="80" width="76" height="110" rx="3" fill="#111" stroke="#333" stroke-width="1"/>
+            <text x="100" y="128" text-anchor="middle" fill="#fff" font-family="Montserrat,sans-serif" font-weight="900" font-size="11" letter-spacing="1">WHEY GOLD</text>
+            <text x="100" y="145" text-anchor="middle" fill="#D91E18" font-family="sans-serif" font-weight="700" font-size="8" letter-spacing="2">PROTEIN</text>
+            <text x="100" y="162" text-anchor="middle" fill="#666" font-family="sans-serif" font-size="7">2.27 KG · 73 SERVICIOS</text>
+            <ellipse cx="100" cy="34" rx="28" ry="7" fill="#b51713"/>
+            <line x1="72" y1="215" x2="128" y2="215" stroke="#2a2a2a" stroke-width="1"/>
+            <text x="100" y="230" text-anchor="middle" fill="#555" font-family="sans-serif" font-size="7">XTREME NUTRITION</text>
+          </svg>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Proteína</div>
+          <div class="product-name">Whey Gold Protein</div>
+          <div class="product-price">$45 <span>USD</span></div>
+        </div>
+      </div>
+
+       <!-- Creatina Monohidrato -->
+     <div class="product-card reveal">
+     <div class="product-img-wrap">
+     <div class="product-badge">Esencial</div>
+
+    <img src="img_creatina.png"
+         alt="Creatina Monohidrato"
+         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+
+    <svg xmlns="http://www.w3.org/2000/svg"
+         viewBox="0 0 200 260"
+         class="prod-svg"
+         style="display:none">
+            <rect x="50" y="55" width="100" height="165" rx="6" fill="#1c1c1c" stroke="#2a2a2a" stroke-width="1.5"/>
+            <rect x="44" y="40" width="112" height="22" rx="4" fill="#fff"/>
+            <rect x="62" y="80" width="76" height="110" rx="3" fill="#111" stroke="#333" stroke-width="1"/>
+            <text x="100" y="125" text-anchor="middle" fill="#fff" font-family="Montserrat,sans-serif" font-weight="900" font-size="10" letter-spacing="1">CREATINA</text>
+            <text x="100" y="141" text-anchor="middle" fill="#D91E18" font-family="sans-serif" font-weight="700" font-size="7" letter-spacing="2">MONOHIDRATO</text>
+            <text x="100" y="158" text-anchor="middle" fill="#666" font-family="sans-serif" font-size="7">300 G · MICRONIZADA</text>
+            <!-- crystal/molecule icon -->
+            <polygon points="100,90 108,97 105,107 95,107 92,97" fill="none" stroke="#D91E18" stroke-width="1.2"/>
+            <circle cx="100" cy="99" r="3" fill="#D91E18"/>
+            <ellipse cx="100" cy="34" rx="28" ry="7" fill="#ccc"/>
+            <line x1="72" y1="215" x2="128" y2="215" stroke="#2a2a2a" stroke-width="1"/>
+            <text x="100" y="230" text-anchor="middle" fill="#555" font-family="sans-serif" font-size="7">XTREME NUTRITION</text>
+          </svg>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Fuerza</div>
+          <div class="product-name">Creatina Monohidrato</div>
+          <div class="product-price">$22 <span>USD</span></div>
+        </div>
+      </div>
+
+      <!-- Colágeno Marino -->
+      <div class="product-card reveal">
+        <div class="product-img-wrap">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 260" class="prod-svg">
+            <!-- pill bottle -->
+            <rect x="60" y="70" width="80" height="145" rx="10" fill="#1c1c1c" stroke="#2a2a2a" stroke-width="1.5"/>
+            <rect x="55" y="52" width="90" height="26" rx="8" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1"/>
+            <rect x="70" y="95" width="60" height="90" rx="3" fill="#111" stroke="#2a2a2a" stroke-width="1"/>
+            <text x="100" y="132" text-anchor="middle" fill="#fff" font-family="Montserrat,sans-serif" font-weight="900" font-size="9" letter-spacing="1">COLÁGENO</text>
+            <text x="100" y="147" text-anchor="middle" fill="#D91E18" font-family="sans-serif" font-weight="700" font-size="7" letter-spacing="1">MARINO + VIT C</text>
+            <text x="100" y="163" text-anchor="middle" fill="#666" font-family="sans-serif" font-size="6.5">120 CÁPSULAS</text>
+            <!-- capsule pills icon -->
+            <ellipse cx="88" cy="119" rx="6" ry="3" fill="#D91E18" transform="rotate(-30,88,119)"/>
+            <ellipse cx="100" cy="116" rx="6" ry="3" fill="#fff" opacity="0.3" transform="rotate(-30,100,116)"/>
+            <ellipse cx="112" cy="119" rx="6" ry="3" fill="#D91E18" transform="rotate(-30,112,119)"/>
+            <text x="100" y="230" text-anchor="middle" fill="#555" font-family="sans-serif" font-size="7">XTREME NUTRITION</text>
+          </svg>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Recuperación</div>
+          <div class="product-name">Colágeno Marino + C</div>
+          <div class="product-price">$35 <span>USD</span></div>
+        </div>
+      </div>
+
+      <!-- Pre-workout -->
+      <div class="product-card reveal">
+        <div class="product-img-wrap">
+          <div class="product-badge sale">Nuevo</div>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 260" class="prod-svg">
+            <!-- energy can -->
+            <rect x="55" y="45" width="90" height="175" rx="12" fill="#D91E18"/>
+            <rect x="55" y="45" width="90" height="175" rx="12" fill="url(#can-grad)"/>
+            <defs>
+              <linearGradient id="can-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#000;stop-opacity:0.4"/>
+                <stop offset="40%" style="stop-color:#000;stop-opacity:0"/>
+                <stop offset="100%" style="stop-color:#000;stop-opacity:0.3"/>
+              </linearGradient>
+            </defs>
+            <rect x="55" y="45" width="90" height="15" rx="12" fill="#b51713"/>
+            <rect x="55" y="205" width="90" height="15" rx="12" fill="#b51713"/>
+            <!-- label area -->
+            <rect x="62" y="90" width="76" height="90" fill="#000" opacity="0.25" rx="2"/>
+            <!-- lightning bolt -->
+            <polygon points="108,100 95,128 103,128 92,155 115,122 106,122 118,100" fill="#fff" opacity="0.95"/>
+            <text x="100" y="175" text-anchor="middle" fill="#fff" font-family="Montserrat,sans-serif" font-weight="900" font-size="9" letter-spacing="2">PRE-WORKOUT</text>
+            <text x="100" y="188" text-anchor="middle" fill="#ffcccc" font-family="sans-serif" font-size="7">XTREME FORMULA</text>
+            <text x="100" y="230" text-anchor="middle" fill="#555" font-family="sans-serif" font-size="7">XTREME NUTRITION</text>
+          </svg>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Energía</div>
+          <div class="product-name">Xtreme Pre-Workout</div>
+          <div class="product-price">$38 <span>USD</span></div>
+        </div>
+      </div>
+
+      <!-- Vitamina D3 + K2 -->
+      <div class="product-card reveal">
+        <div class="product-img-wrap">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 260" class="prod-svg">
+            <!-- slim bottle -->
+            <rect x="65" y="60" width="70" height="155" rx="8" fill="#1c1c1c" stroke="#2a2a2a" stroke-width="1.5"/>
+            <rect x="60" y="44" width="80" height="22" rx="6" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1"/>
+            <!-- label -->
+            <rect x="72" y="82" width="56" height="100" rx="3" fill="#111" stroke="#222" stroke-width="1"/>
+            <!-- sun icon -->
+            <circle cx="100" cy="107" r="10" fill="none" stroke="#D91E18" stroke-width="1.5"/>
+            <circle cx="100" cy="107" r="5" fill="#D91E18"/>
+            <line x1="100" y1="93" x2="100" y2="89" stroke="#D91E18" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="100" y1="121" x2="100" y2="125" stroke="#D91E18" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="86" y1="107" x2="82" y2="107" stroke="#D91E18" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="114" y1="107" x2="118" y2="107" stroke="#D91E18" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="90" y1="97" x2="87" y2="94" stroke="#D91E18" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="110" y1="117" x2="113" y2="120" stroke="#D91E18" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="110" y1="97" x2="113" y2="94" stroke="#D91E18" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="90" y1="117" x2="87" y2="120" stroke="#D91E18" stroke-width="1.2" stroke-linecap="round"/>
+            <text x="100" y="137" text-anchor="middle" fill="#fff" font-family="Montserrat,sans-serif" font-weight="900" font-size="9">VIT D3</text>
+            <text x="100" y="150" text-anchor="middle" fill="#D91E18" font-family="sans-serif" font-size="7" letter-spacing="1">+ K2 MK-7</text>
+            <text x="100" y="164" text-anchor="middle" fill="#666" font-family="sans-serif" font-size="6.5">90 SOFTGELS</text>
+            <text x="100" y="230" text-anchor="middle" fill="#555" font-family="sans-serif" font-size="7">XTREME NUTRITION</text>
+          </svg>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Salud Integral</div>
+          <div class="product-name">Vitamina D3 + K2</div>
+          <div class="product-price">$28 <span>USD</span></div>
+        </div>
+      </div>
+
+      <!-- BCAA -->
+      <div class="product-card reveal">
+        <div class="product-img-wrap">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 260" class="prod-svg">
+            <!-- standing pouch / bag -->
+            <path d="M55,80 Q55,65 70,62 L130,62 Q145,65 145,80 L148,205 Q148,215 138,218 L62,218 Q52,215 52,205 Z" fill="#1c1c1c" stroke="#2a2a2a" stroke-width="1.5"/>
+            <!-- top seal -->
+            <rect x="60" y="55" width="80" height="14" rx="4" fill="#D91E18"/>
+            <!-- label -->
+            <rect x="64" y="85" width="72" height="100" rx="3" fill="#111" stroke="#222" stroke-width="1"/>
+            <!-- DNA / molecule icon -->
+            <path d="M90,95 Q100,103 110,95" fill="none" stroke="#D91E18" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M90,105 Q100,113 110,105" fill="none" stroke="#D91E18" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="90" y1="95" x2="90" y2="105" stroke="#555" stroke-width="1"/>
+            <line x1="110" y1="95" x2="110" y2="105" stroke="#555" stroke-width="1"/>
+            <text x="100" y="126" text-anchor="middle" fill="#fff" font-family="Montserrat,sans-serif" font-weight="900" font-size="12" letter-spacing="1">BCAA</text>
+            <text x="100" y="140" text-anchor="middle" fill="#D91E18" font-family="sans-serif" font-weight="700" font-size="7" letter-spacing="1">2:1:1 + GLUTAMINA</text>
+            <text x="100" y="155" text-anchor="middle" fill="#666" font-family="sans-serif" font-size="6.5">400 G · FRUIT PUNCH</text>
+            <!-- bottom gusset -->
+            <ellipse cx="100" cy="212" rx="40" ry="6" fill="#141414" stroke="#2a2a2a" stroke-width="1"/>
+            <text x="100" y="235" text-anchor="middle" fill="#555" font-family="sans-serif" font-size="7">XTREME NUTRITION</text>
+          </svg>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Rendimiento</div>
+          <div class="product-name">BCAA 2:1:1 + Glutamina</div>
+          <div class="product-price">$36 <span>USD</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CATEGORIES VISUAL -->
+  <section style="background: var(--dark);">
+    <div class="section-label reveal">Explora por meta</div>
+    <h2 class="section-title reveal">Tus Objetivos</h2>
+    <div class="cat-grid">
+
+      <!-- Ganar Masa -->
+      <div class="cat-card large reveal">
+        <div class="cat-bg">
+          <img src="img_masa.png" alt="Ganar masa muscular">
+        </div>
+        <div class="cat-info">
+          <div class="cat-label">Stack completo</div>
+          <div class="cat-name">Ganar Masa</div>
+          <div class="cat-sub">Fórmula de crecimiento extremo</div>
+        </div>
+      </div>
+
+      <!-- Definición -->
+      <div class="cat-card medium reveal">
+        <div class="cat-bg">
+          <img src="img_definicion.png" alt="Definición muscular">
+        </div>
+        <div class="cat-info">
+          <div class="cat-label">Pérdida de grasa</div>
+          <div class="cat-name">Definición</div>
+          <div class="cat-sub">Quema optimizada</div>
+        </div>
+      </div>
+
+      <!-- Energía -->
+      <div class="cat-card medium reveal">
+        <div class="cat-bg">
+          <img src="img_energia.png" alt="Energía y rendimiento">
+        </div>
+        <div class="cat-info">
+          <div class="cat-label">Rendimiento</div>
+          <div class="cat-name">Energía</div>
+          <div class="cat-sub">Enfoque y resistencia</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PHILOSOPHY -->
+  <div class="philosophy" id="filosofia">
+    <div class="phil-visual">
+      <div class="phil-visual-text">SUDOR & DISCIPLINA</div>
+      <div class="phil-img-placeholder">
+        <img
+          src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&w=600&q=80"
+          alt="Atleta entrenando"
+          loading="lazy"
+          onerror="this.parentElement.style.background='#1a1a1a'"
+        >
+      </div>
+    </div>
+    <div class="phil-content">
+      <div class="section-label reveal">Nuestro Ethos</div>
+      <h2 class="phil-quote reveal">
+        El trabajo duro <em>no es negociable.</em>
+      </h2>
+      <p class="phil-text reveal">
+        En Xtreme no vendemos atajos. Vendemos herramientas para quienes ya pusieron el trabajo. La suplementación
+        correcta no reemplaza el esfuerzo, lo recompensa de forma definitiva.
+      </p>
+      <div class="phil-pillars reveal">
+        <div class="pillar">
+          <div class="pillar-icon">1</div>
+          <div>
+            <div class="pillar-name">Fórmulas Transparentes</div>
+            <div class="pillar-desc">Dosis completas, sin ingredientes ocultos. Lo que ves en la etiqueta es lo que obtienes.</div>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">2</div>
+          <div>
+            <div class="pillar-name">Calidad Clínica</div>
+            <div class="pillar-desc">Testados en laboratorios para garantizar pureza absoluta y máxima absorción.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW TO BUY -->
+  <section id="comprar">
+    <div class="section-label reveal">Experiencia Premium</div>
+    <h2 class="section-title reveal">Consigue tu Stack</h2>
+
+ <div class="buy-grid">
+
+  <!-- Compra rápida -->
+  <div class="buy-card reveal">
+    <div class="buy-icon">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M8 4H16C17.1 4 18 4.9 18 6V18C18 19.1 17.1 20 16 20H8C6.9 20 6 19.1 6 18V6C6 4.9 6.9 4 8 4Z"
+          stroke="currentColor" stroke-width="1.8"/>
+        <path d="M10 7H14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="12" cy="17" r="1" fill="currentColor"/>
+      </svg>
+    </div>
+
+    <div class="buy-title">Compra Rápida</div>
+
+    <p class="buy-desc">
+      Haz tu pedido directo en línea o a través de WhatsApp.
+      Sistema fluido, sin esperas innecesarias.
+    </p>
+  </div>
+
+  <!-- Envío -->
+  <div class="buy-card reveal">
+    <div class="buy-icon">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M3 7H15V17H3V7Z"
+          stroke="currentColor" stroke-width="1.8"/>
+        <path d="M15 10H19L21 13V17H15V10Z"
+          stroke="currentColor" stroke-width="1.8"/>
+        <circle cx="7.5" cy="17.5" r="1.5"
+          stroke="currentColor" stroke-width="1.8"/>
+        <circle cx="17.5" cy="17.5" r="1.5"
+          stroke="currentColor" stroke-width="1.8"/>
+      </svg>
+    </div>
+
+    <div class="buy-title">Envío Express</div>
+
+    <p class="buy-desc">
+      Despacho garantizado en 24h. Entregas locales el mismo día
+      para que nunca detengas tu rutina.
+    </p>
+  </div>
+
+  <!-- Garantía -->
+  <div class="buy-card reveal">
+    <div class="buy-icon">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M12 3L19 6V11C19 16 15.5 19 12 21C8.5 19 5 16 5 11V6L12 3Z"
+          stroke="currentColor" stroke-width="1.8"/>
+        <path d="M9 12L11 14L15 10"
+          stroke="currentColor" stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <div class="buy-title">Garantía Xtreme</div>
+
+    <p class="buy-desc">
+      Si no estás satisfecho con la calidad de tu producto,
+      te devolvemos el dinero. Así de seguros estamos.
+    </p>
+  </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials" id="testimonios">
+    <div class="section-label reveal">Comunidad Xtreme</div>
+    <h2 class="section-title reveal">Testimonios</h2>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"Desde que empecé con la creatina y el whey de Xtreme, mis marcas subieron radicalmente. El pre-workout es energía limpia sin crash."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">👨</div>
+          <div>
+            <div class="testi-name">Carlos M.</div>
+            <div class="testi-role">Powerlifter</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"La digestión de la proteína es impecable. He probado muchísimas marcas, pero la transparencia de Xtreme me dio la confianza que buscaba."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">👩</div>
+          <div>
+            <div class="testi-name">Andrea L.</div>
+            <div class="testi-role">Atleta CrossFit</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"El colágeno marino me ayudó a recuperar mis articulaciones más rápido. La calidad justifica totalmente la inversión."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">👨</div>
+          <div>
+            <div class="testi-name">Roberto T.</div>
+            <div class="testi-role">Culturista Amateur</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <div class="cta-banner">
+    <h2 class="cta-title">¿Listo para empezar?</h2>
+    <p class="cta-sub">Únete a miles de atletas que ya elevaron su nivel. Compra hoy y obtén un 10% de descuento en tu primer stack completo.</p>
+    <a href="#productos" class="btn-dark">Comprar Ahora</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>
+      <div class="footer-brand-name">XTREME.</div>
+      <p class="footer-tagline">Equipando atletas con la mejor nutrición del mercado. Rendimiento y transparencia.</p>
+      <div class="footer-social">
+        <a href="#" class="social-btn">Ig</a>
+        <a href="#" class="social-btn">Fb</a>
+        <a href="#" class="social-btn">Yt</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Comprar</div>
+      <div class="footer-links">
+        <a href="#">Proteínas</a>
+        <a href="#">Creatina</a>
+        <a href="#">Aminoácidos</a>
+        <a href="#">Accesorios</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Soporte</div>
+      <div class="footer-links">
+        <a href="#">Centro de ayuda</a>
+        <a href="#">Rastrear pedido</a>
+        <a href="#">Devoluciones</a>
+        <a href="#">Contacto</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Comunidad</div>
+      <div class="footer-links">
+        <a href="#">Blog Oficial</a>
+        <a href="#">Embajadores</a>
+        <a href="#">Eventos Xtreme</a>
+      </div>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 XtremeGym. Todos los derechos reservados.</div>
+    <div class="footer-copy">Términos · Privacidad · Accesibilidad</div>
+  </div>
+
+  <script>
+    // Filter buttons interaction
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+
+    // Scroll reveal animation
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+
+    // Navbar blur effect on scroll
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        nav.style.background = 'rgba(0, 0, 0, 0.9)';
+        nav.style.borderBottom = '1px solid var(--border)';
+      } else {
+        nav.style.background = 'rgba(0, 0, 0, 0.6)';
+        nav.style.borderBottom = '1px solid transparent';
+      }
+    });
+  </script>
+</body>
+
+</html>
