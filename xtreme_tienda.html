@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XTREME — Suplementación de Élite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:ital,wght@0,700;0,800;0,900;1,800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #000000;
+      --dark: #0f0f0f;
+      --card: #141414;
+      --border: #262626;
+      --border-hover: #404040;
+      --red: #D91E18;
+      --red-hover: #b51713;
+      --white: #FFFFFF;
+      --muted: #a0a0a0;
+      --font-display: 'Montserrat', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+    *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--black); color: var(--white); font-family: var(--font-body); font-weight: 400; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+    /* UTILS */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      padding: 16px 48px; display: flex; justify-content: space-between; align-items: center;
+      background: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border); transition: all 0.3s;
+    }
+    .nav-logo { font-family: var(--font-display); font-size: 1.8rem; font-weight: 900; letter-spacing: -0.5px; color: var(--white); text-decoration: none; text-transform: uppercase; cursor: pointer; position: relative; animation: logo-pulse 2.8s ease-in-out infinite; }
+    .nav-logo::after { content: ''; position: absolute; top: -6px; right: -10px; width: 8px; height: 8px; background: var(--red); border-radius: 50%; box-shadow: 0 0 16px rgba(217,30,24,0.75); opacity: 0.9; }
+    .nav-logo span { color: var(--red); }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { font-family: var(--font-body); font-size: 0.85rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--white); text-decoration: none; position: relative; padding-bottom: 4px; transition: color 0.2s; cursor: pointer; }
+    .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--red); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-cta { font-family: var(--font-body); font-size: 0.85rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; background: var(--white); color: var(--black); padding: 12px 24px; border: none; border-radius: 2px; cursor: pointer; transition: all 0.2s; }
+    .nav-cta:hover { background: var(--red); color: var(--white); }
+
+    /* HERO */
+    .hero { min-height: 100vh; position: relative; overflow: hidden; display: flex; align-items: center; padding: 120px 48px 60px; }
+    .hero-content { max-width: 800px; position: relative; z-index: 2; }
+    .hero-eyebrow { font-family: var(--font-body); font-size: 0.9rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--red); margin-bottom: 16px; }
+    .hero-title { font-family: var(--font-display); font-size: clamp(4rem,8vw,7.5rem); font-weight: 900; font-style: italic; line-height: 0.9; color: var(--white); margin-bottom: 24px; text-transform: uppercase; animation: title-glow 3.4s ease-in-out infinite both; }
+    .hero-title .accent { color: var(--red); display: inline-block; position: relative; }
+    .hero-title .accent::after { content: ''; position: absolute; left: 50%; bottom: -10px; width: 65%; height: 4px; background: linear-gradient(90deg, transparent, rgba(217,30,24,0.8), transparent); transform: translateX(-50%) scaleX(0.2); transform-origin: center; opacity: 0; transition: transform 0.35s ease, opacity 0.35s ease; }
+    .hero-title:hover .accent::after { transform: translateX(-50%) scaleX(1); opacity: 1; }
+    .hero-subtitle { font-family: var(--font-body); font-size: 1.1rem; line-height: 1.6; color: var(--muted); max-width: 450px; margin-bottom: 40px; }
+    .hero-actions { display: flex; gap: 16px; align-items: center; }
+    .btn-primary { font-family: var(--font-body); font-size: 0.9rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; background: var(--white); color: var(--black); padding: 16px 36px; border: none; border-radius: 2px; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block; }
+    .btn-primary:hover { background: var(--red); color: var(--white); }
+    .btn-outline { font-family: var(--font-body); font-size: 0.9rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; background: transparent; color: var(--white); padding: 14px 36px; border: 2px solid var(--white); border-radius: 2px; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block; }
+    .btn-outline:hover { background: var(--white); color: var(--black); }
+
+    @keyframes logo-pulse {
+      0% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-2px) scale(1.01); }
+      100% { transform: translateY(0) scale(1); }
+    }
+    @keyframes title-glow {
+      0%, 100% { text-shadow: 0 0 0 rgba(217,30,24,0); }
+      40% { text-shadow: 0 0 18px rgba(217,30,24,0.18), 0 0 8px rgba(255,255,255,0.16); }
+      80% { text-shadow: 0 0 28px rgba(217,30,24,0.25), 0 0 12px rgba(255,255,255,0.22); }
+    }
+
+    /* BRAND BAR */
+    .brand-bar { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 16px 0; overflow: hidden; background: var(--dark); }
+    .brand-track { display: flex; gap: 48px; animation: marquee 20s linear infinite; white-space: nowrap; }
+    .brand-item { font-family: var(--font-display); font-size: 1rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 24px; }
+    .brand-item::after { content: ''; display: block; width: 6px; height: 6px; background: var(--red); border-radius: 50%; }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* SECTIONS */
+    section { padding: 100px 48px; }
+    .section-label { font-family: var(--font-body); font-size: 0.85rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--red); margin-bottom: 12px; }
+    .section-title { font-family: var(--font-display); font-size: clamp(2.5rem,4vw,4rem); font-weight: 900; text-transform: uppercase; line-height: 1; margin-bottom: 24px; }
+
+    /* PRODUCTS */
+    .products-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 48px; }
+    .products-filter { display: flex; gap: 8px; flex-wrap: wrap; }
+    .filter-btn { font-family: var(--font-body); font-size: 0.8rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 8px 20px; background: var(--dark); color: var(--muted); border: 1px solid var(--border); border-radius: 30px; cursor: pointer; transition: all 0.2s; }
+    .filter-btn.active,.filter-btn:hover { background: var(--white); color: var(--black); border-color: var(--white); }
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 24px; }
+    .product-card { background: var(--black); position: relative; display: flex; flex-direction: column; cursor: pointer; }
+    .product-card:hover .product-img-wrap { border-color: var(--red); }
+    .product-img-wrap { height: 340px; background: var(--card); display: flex; align-items: center; justify-content: center; position: relative; border: 1px solid var(--border); transition: border-color 0.3s; margin-bottom: 16px; overflow: hidden; }
+    .product-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .prod-svg { width: 160px; height: 220px; transition: transform 0.4s ease; }
+    .product-card:hover .prod-svg { transform: translateY(-6px) scale(1.03); }
+    .product-card:hover .product-img-wrap img { transform: scale(1.04); }
+    .product-badge { position: absolute; top: 12px; left: 12px; font-family: var(--font-body); font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; background: var(--white); color: var(--black); padding: 4px 10px; border-radius: 2px; z-index: 2; }
+    .product-badge.sale { background: var(--red); color: var(--white); }
+    .product-info { padding: 0 4px; display: flex; flex-direction: column; flex: 1; }
+    .product-category { font-family: var(--font-body); font-size: 0.75rem; font-weight: 500; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; }
+    .product-name { font-family: var(--font-display); font-size: 1.2rem; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; line-height: 1.2; }
+    .product-price { font-family: var(--font-body); font-size: 1rem; font-weight: 700; color: var(--white); margin-top: auto; }
+    .product-price span { font-size: 0.8rem; color: var(--muted); font-weight: 400; }
+
+    /* Quick-view hint */
+    .product-view-hint {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 48px;
+      background: var(--red); display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-body); font-size: 0.8rem; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--white); transform: translateY(100%);
+      transition: transform 0.3s ease; z-index: 3;
+    }
+    .product-img-wrap:hover .product-view-hint { transform: translateY(0); }
+
+    /* CATEGORIES */
+    .cat-grid { display: grid; grid-template-columns: repeat(12,1fr); grid-auto-rows: 300px; gap: 16px; margin-top: 48px; }
+    .cat-card { position: relative; overflow: hidden; background: var(--card); display: flex; align-items: flex-end; padding: 32px; border: 1px solid var(--border); transition: border-color 0.3s; }
+    .cat-card:hover { border-color: var(--border-hover); }
+    .cat-card.large { grid-column: span 8; grid-row: span 2; }
+    .cat-card.medium { grid-column: span 4; }
+    .cat-bg { position: absolute; inset: 0; overflow: hidden; }
+    .cat-bg img { width: 100%; height: 100%; object-fit: cover; opacity: 0.28; transition: transform 0.7s ease, opacity 0.4s ease; filter: grayscale(40%); }
+    .cat-card:hover .cat-bg img { transform: scale(1.06); opacity: 0.38; }
+    .cat-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 60%); }
+    .cat-info { position: relative; z-index: 2; }
+    .cat-label { font-family: var(--font-body); font-size: 0.75rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--red); margin-bottom: 8px; }
+    .cat-name { font-family: var(--font-display); font-size: 2.5rem; font-weight: 900; text-transform: uppercase; line-height: 1; margin-bottom: 8px; }
+    .cat-sub { font-size: 0.9rem; color: var(--muted); }
+
+    /* PHILOSOPHY */
+    .philosophy { background: var(--dark); display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .phil-visual { background: var(--black); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; min-height: 600px; border-right: 1px solid var(--border); }
+    .phil-visual-text { font-family: var(--font-display); font-size: 6rem; font-weight: 900; color: transparent; -webkit-text-stroke: 1px var(--border); text-transform: uppercase; transform: rotate(-90deg); position: absolute; white-space: nowrap; }
+    .phil-img-placeholder { width: 300px; height: 400px; position: relative; z-index: 2; overflow: hidden; border: 1px solid var(--border); }
+    .phil-img-placeholder img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(20%); }
+    .phil-content { padding: 100px 72px; display: flex; flex-direction: column; justify-content: center; }
+    .phil-quote { font-family: var(--font-display); font-size: clamp(2rem,3.5vw,3rem); font-weight: 900; line-height: 1.1; text-transform: uppercase; margin-bottom: 32px; }
+    .phil-quote em { color: var(--red); font-style: italic; }
+    .phil-text { font-size: 1rem; color: var(--muted); line-height: 1.8; margin-bottom: 40px; max-width: 480px; }
+    .phil-pillars { display: flex; flex-direction: column; gap: 24px; }
+    .pillar { display: flex; gap: 20px; }
+    .pillar-icon { width: 40px; height: 40px; background: var(--white); color: var(--black); display: flex; align-items: center; justify-content: center; font-weight: bold; border-radius: 50%; flex-shrink: 0; }
+    .pillar-name { font-family: var(--font-body); font-size: 1rem; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; }
+    .pillar-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+
+    /* HOW TO BUY */
+    .buy-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 48px; }
+    .buy-card { background: var(--card); border: 1px solid var(--border); padding: 40px 32px; transition: transform 0.3s, border-color 0.3s; }
+    .buy-card:hover { transform: translateY(-4px); border-color: var(--border-hover); }
+    .buy-icon { width: 58px; height: 58px; border: 1px solid var(--border); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; background: rgba(255,255,255,0.02); transition: all 0.3s ease; }
+    .buy-icon svg { width: 28px; height: 28px; color: var(--white); transition: all 0.3s ease; }
+    .buy-card:hover .buy-icon { border-color: var(--red); background: rgba(217,30,24,0.08); transform: translateY(-2px); }
+    .buy-card:hover .buy-icon svg { color: var(--red); }
+    .buy-title { font-family: var(--font-display); font-size: 1.4rem; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; }
+    .buy-desc { font-size: 0.95rem; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
+
+    /* TESTIMONIALS */
+    .testimonials { background: var(--dark); border-top: 1px solid var(--border); }
+    .testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 48px; }
+    .testi-card { background: var(--black); border: 1px solid var(--border); padding: 40px 32px; }
+    .testi-stars { color: var(--red); font-size: 1rem; margin-bottom: 16px; letter-spacing: 2px; }
+    .testi-quote { font-size: 0.95rem; line-height: 1.7; margin-bottom: 24px; }
+    .testi-author { display: flex; align-items: center; gap: 16px; }
+    .testi-avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--card); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+    .testi-name { font-family: var(--font-body); font-weight: 700; font-size: 0.9rem; text-transform: uppercase; }
+    .testi-role { font-size: 0.8rem; color: var(--muted); }
+
+    /* CTA BANNER */
+    .cta-banner { background: var(--white); color: var(--black); padding: 100px 48px; text-align: center; }
+    .cta-title { font-family: var(--font-display); font-size: clamp(3rem,6vw,6rem); font-weight: 900; text-transform: uppercase; line-height: 1; margin-bottom: 24px; }
+    .cta-sub { font-size: 1.1rem; color: #444; max-width: 500px; margin: 0 auto 40px; line-height: 1.6; }
+    .btn-dark { font-family: var(--font-body); font-size: 0.9rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; background: var(--black); color: var(--white); padding: 16px 40px; border: none; border-radius: 2px; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block; }
+    .btn-dark:hover { background: var(--red); }
+
+    /* FOOTER */
+    footer { background: var(--black); border-top: 1px solid var(--border); padding: 80px 48px 40px; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 64px; }
+    .footer-brand-name { font-family: var(--font-display); font-size: 2rem; font-weight: 900; text-transform: uppercase; margin-bottom: 16px; }
+    .footer-tagline { font-size: 0.9rem; color: var(--muted); line-height: 1.6; margin-bottom: 32px; max-width: 300px; }
+    .footer-social { display: flex; gap: 16px; }
+    .social-btn { width: 40px; height: 40px; background: var(--card); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; text-decoration: none; transition: background 0.2s; color: var(--white); }
+    .social-btn:hover { background: var(--red); }
+    .footer-col-title { font-family: var(--font-body); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; margin-bottom: 24px; }
+    .footer-links { display: flex; flex-direction: column; gap: 12px; }
+    .footer-links a { font-size: 0.9rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--white); }
+    .footer-bottom { border-top: 1px solid var(--border); padding: 24px 48px; display: flex; justify-content: space-between; align-items: center; }
+    .footer-copy { font-family: var(--font-body); font-size: 0.8rem; color: var(--muted); }
+
+    /* =========================================
+       PRODUCT DETAIL PAGE
+    ========================================= */
+    #product-detail-page {
+      position: fixed; inset: 0; z-index: 300;
+      background: var(--black); overflow-y: auto;
+      transform: translateX(100%);
+      transition: transform 0.5s cubic-bezier(0.77, 0, 0.18, 1);
+    }
+    #product-detail-page.open { transform: translateX(0); }
+
+    /* Detail nav bar */
+    .detail-nav {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(0,0,0,0.95); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .detail-back {
+      display: flex; align-items: center; gap: 10px;
+      font-family: var(--font-body); font-size: 0.85rem; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase; color: var(--muted);
+      cursor: pointer; transition: color 0.2s; border: none; background: none;
+    }
+    .detail-back:hover { color: var(--white); }
+    .detail-back svg { width: 16px; height: 16px; }
+    .detail-breadcrumb {
+      font-family: var(--font-body); font-size: 0.8rem; color: var(--muted);
+    }
+    .detail-breadcrumb span { color: var(--white); }
+
+    /* Hero layout */
+    .detail-hero {
+      display: grid; grid-template-columns: 1fr 1fr; min-height: 90vh;
+      border-bottom: 1px solid var(--border);
+    }
+    .detail-visual {
+      background: var(--dark); position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      border-right: 1px solid var(--border); min-height: 600px;
+    }
+    .detail-visual-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(217,30,24,0.08) 0%, transparent 70%);
+    }
+    .detail-visual-label {
+      position: absolute; bottom: 32px; left: 32px;
+      font-family: var(--font-display); font-size: 7rem; font-weight: 900;
+      color: transparent; -webkit-text-stroke: 1px var(--border);
+      text-transform: uppercase; line-height: 1; pointer-events: none;
+      user-select: none;
+    }
+    .detail-product-svg-wrap {
+      position: relative; z-index: 2;
+      animation: float 4s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-16px) rotate(1deg); }
+    }
+    .detail-product-svg-wrap svg {
+      width: 200px; height: 280px;
+      filter: drop-shadow(0 40px 60px rgba(217,30,24,0.25));
+    }
+    .detail-badge-wrap {
+      position: absolute; top: 32px; right: 32px; z-index: 3;
+    }
+    .detail-badge {
+      font-family: var(--font-body); font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+      background: var(--red); color: var(--white);
+      padding: 6px 14px; border-radius: 2px;
+    }
+    .detail-badge.white { background: var(--white); color: var(--black); }
+
+    /* Product info panel */
+    .detail-info {
+      padding: 64px 72px; display: flex; flex-direction: column;
+      justify-content: center; position: relative; overflow: hidden;
+    }
+    .detail-info::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 1px; background: linear-gradient(90deg, var(--red), transparent);
+    }
+    .detail-category {
+      font-family: var(--font-body); font-size: 0.8rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase; color: var(--red);
+      margin-bottom: 12px;
+    }
+    .detail-name {
+      font-family: var(--font-display); font-size: clamp(2.5rem,4vw,4rem);
+      font-weight: 900; text-transform: uppercase; line-height: 0.95;
+      margin-bottom: 16px;
+    }
+    .detail-rating {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 24px;
+    }
+    .detail-stars { color: var(--red); letter-spacing: 3px; font-size: 1rem; }
+    .detail-rating-count { font-size: 0.85rem; color: var(--muted); }
+    .detail-price-wrap { margin-bottom: 32px; }
+    .detail-price {
+      font-family: var(--font-display); font-size: 3rem; font-weight: 900;
+      line-height: 1;
+    }
+    .detail-price-sub { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
+    .detail-short-desc {
+      font-size: 1rem; color: var(--muted); line-height: 1.7;
+      margin-bottom: 32px; max-width: 440px;
+      border-left: 2px solid var(--red); padding-left: 16px;
+    }
+
+    /* Variant selector */
+    .detail-variants { margin-bottom: 32px; }
+    .detail-variants-label {
+      font-family: var(--font-body); font-size: 0.8rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1px; color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .variant-options { display: flex; gap: 10px; flex-wrap: wrap; }
+    .variant-btn {
+      font-family: var(--font-body); font-size: 0.85rem; font-weight: 600;
+      padding: 8px 20px; background: var(--card); color: var(--muted);
+      border: 1px solid var(--border); border-radius: 2px; cursor: pointer;
+      transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .variant-btn.active,.variant-btn:hover { background: var(--white); color: var(--black); border-color: var(--white); }
+
+    /* Quantity + Add to Cart */
+    .detail-purchase { display: flex; gap: 12px; align-items: center; margin-bottom: 32px; }
+    .qty-control {
+      display: flex; align-items: center; border: 1px solid var(--border);
+      background: var(--card); border-radius: 2px; overflow: hidden;
+    }
+    .qty-btn {
+      width: 44px; height: 52px; background: none; border: none;
+      color: var(--white); font-size: 1.2rem; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .qty-btn:hover { background: var(--border); }
+    .qty-display {
+      width: 52px; height: 52px; text-align: center; line-height: 52px;
+      font-family: var(--font-body); font-weight: 700; font-size: 1rem;
+      color: var(--white); border-left: 1px solid var(--border); border-right: 1px solid var(--border);
+    }
+    .btn-add-cart {
+      flex: 1; font-family: var(--font-body); font-size: 0.9rem; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+      background: var(--red); color: var(--white);
+      padding: 16px 32px; border: none; border-radius: 2px; cursor: pointer;
+      transition: all 0.2s; position: relative; overflow: hidden;
+    }
+    .btn-add-cart::after {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(255,255,255,0.15); transform: translateX(-100%);
+      transition: transform 0.4s ease;
+    }
+    .btn-add-cart:hover::after { transform: translateX(0); }
+    .btn-add-cart:hover { background: var(--red-hover); }
+    .btn-wishlist {
+      width: 52px; height: 52px; background: var(--card); border: 1px solid var(--border);
+      border-radius: 2px; cursor: pointer; transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .btn-wishlist svg { width: 20px; height: 20px; color: var(--muted); transition: color 0.2s; }
+    .btn-wishlist:hover { border-color: var(--red); }
+    .btn-wishlist:hover svg { color: var(--red); }
+
+    /* Trust badges */
+    .detail-trust {
+      display: flex; gap: 24px; padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+    .trust-item {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.8rem; color: var(--muted);
+    }
+    .trust-item svg { width: 16px; height: 16px; color: var(--red); flex-shrink: 0; }
+
+    /* TABS */
+    .detail-tabs-section { padding: 0 48px 80px; max-width: 1200px; }
+    .tab-header {
+      display: flex; gap: 0; border-bottom: 1px solid var(--border);
+      margin-bottom: 48px; overflow-x: auto;
+    }
+    .tab-btn {
+      font-family: var(--font-body); font-size: 0.85rem; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase; color: var(--muted);
+      padding: 20px 32px; background: none; border: none;
+      border-bottom: 2px solid transparent; cursor: pointer;
+      transition: all 0.2s; white-space: nowrap; margin-bottom: -1px;
+    }
+    .tab-btn.active { color: var(--white); border-bottom-color: var(--red); }
+    .tab-btn:hover { color: var(--white); }
+    .tab-panel { display: none; animation: fadeIn 0.3s ease; }
+    .tab-panel.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+    /* Tab: Descripción */
+    .desc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; }
+    .desc-text { font-size: 1rem; color: var(--muted); line-height: 1.9; }
+    .desc-text p { margin-bottom: 16px; }
+    .desc-highlights { display: flex; flex-direction: column; gap: 20px; }
+    .highlight-row {
+      display: flex; align-items: flex-start; gap: 16px;
+      padding: 20px; background: var(--card); border: 1px solid var(--border);
+      border-radius: 2px; transition: border-color 0.2s;
+    }
+    .highlight-row:hover { border-color: var(--red); }
+    .highlight-icon {
+      width: 36px; height: 36px; background: rgba(217,30,24,0.12);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .highlight-icon svg { width: 18px; height: 18px; color: var(--red); }
+    .highlight-title { font-family: var(--font-body); font-size: 0.9rem; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; }
+    .highlight-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+
+    /* Tab: Beneficios */
+    .benefits-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+    .benefit-card {
+      background: var(--dark); border: 1px solid var(--border); padding: 36px 28px;
+      text-align: center; transition: all 0.3s;
+    }
+    .benefit-card:hover { border-color: var(--red); transform: translateY(-4px); }
+    .benefit-icon-wrap {
+      width: 64px; height: 64px; margin: 0 auto 20px;
+      background: rgba(217,30,24,0.1); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .benefit-icon-wrap svg { width: 30px; height: 30px; color: var(--red); }
+    .benefit-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 800; text-transform: uppercase; margin-bottom: 10px; }
+    .benefit-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+
+    /* Tab: Cómo usar */
+    .howto-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; }
+    .howto-steps { display: flex; flex-direction: column; gap: 24px; }
+    .howto-step {
+      display: flex; gap: 20px; align-items: flex-start;
+      padding: 24px; background: var(--card); border: 1px solid var(--border);
+    }
+    .step-num {
+      font-family: var(--font-display); font-size: 2.5rem; font-weight: 900;
+      color: var(--red); line-height: 1; flex-shrink: 0; width: 48px;
+    }
+    .step-title { font-weight: 700; font-size: 0.95rem; text-transform: uppercase; margin-bottom: 6px; }
+    .step-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+    .howto-info { display: flex; flex-direction: column; gap: 16px; }
+    .info-block {
+      padding: 24px; background: var(--dark); border: 1px solid var(--border);
+    }
+    .info-block-label {
+      font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--red); margin-bottom: 8px;
+    }
+    .info-block-value { font-family: var(--font-display); font-size: 1.4rem; font-weight: 800; text-transform: uppercase; }
+    .info-block-sub { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
+
+    /* Tab: Nutrición */
+    .nutrition-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; }
+    .nutrition-table { border: 1px solid var(--border); }
+    .nutrition-header-row {
+      background: var(--red); padding: 16px 24px;
+      font-family: var(--font-display); font-weight: 800; font-size: 1rem; text-transform: uppercase;
+    }
+    .nutrition-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 24px; border-bottom: 1px solid var(--border); transition: background 0.2s;
+    }
+    .nutrition-row:last-child { border-bottom: none; }
+    .nutrition-row:hover { background: var(--card); }
+    .nutrition-row.sub { padding-left: 40px; }
+    .nutrition-label { font-size: 0.9rem; color: var(--muted); }
+    .nutrition-label.bold { color: var(--white); font-weight: 600; }
+    .nutrition-value { font-weight: 700; font-size: 0.9rem; }
+    .nutrition-dv { font-size: 0.8rem; color: var(--muted); }
+    .nutrition-disclaimer { font-size: 0.8rem; color: var(--muted); margin-top: 16px; line-height: 1.6; }
+    .ingredients-block { padding: 24px; background: var(--dark); border: 1px solid var(--border); }
+    .ingredients-title { font-family: var(--font-body); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+    .ingredients-text { font-size: 0.85rem; color: var(--muted); line-height: 1.8; }
+    .certifications { display: flex; flex-direction: column; gap: 12px; margin-top: 24px; }
+    .cert-badge {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 16px; background: var(--card); border: 1px solid var(--border);
+    }
+    .cert-badge svg { width: 18px; height: 18px; color: var(--red); flex-shrink: 0; }
+    .cert-text { font-size: 0.85rem; font-weight: 600; }
+
+    /* Related products */
+    .related-section {
+      padding: 80px 48px; border-top: 1px solid var(--border);
+      background: var(--dark);
+    }
+    .related-title { font-family: var(--font-display); font-size: 2rem; font-weight: 900; text-transform: uppercase; margin-bottom: 8px; }
+    .related-sub { font-size: 0.9rem; color: var(--muted); margin-bottom: 40px; }
+    .related-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
+
+    /* Added to cart toast */
+    .cart-toast {
+      position: fixed; bottom: 32px; right: 32px; z-index: 500;
+      background: var(--white); color: var(--black);
+      padding: 16px 24px; border-radius: 2px;
+      display: flex; align-items: center; gap: 12px;
+      font-family: var(--font-body); font-size: 0.9rem; font-weight: 600;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      transform: translateY(100px); opacity: 0;
+      transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .cart-toast.show { transform: translateY(0); opacity: 1; }
+    .cart-toast svg { width: 20px; height: 20px; color: var(--red); }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .cat-card.large { grid-column: span 12; grid-row: auto; }
+      .cat-card.medium { grid-column: span 6; }
+      footer { grid-template-columns: 1fr 1fr; }
+      .detail-hero { grid-template-columns: 1fr; }
+      .detail-visual { min-height: 400px; }
+      .desc-grid,.howto-layout,.nutrition-layout { grid-template-columns: 1fr; }
+      .benefits-grid { grid-template-columns: repeat(2,1fr); }
+      .related-grid { grid-template-columns: repeat(2,1fr); }
+    }
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      section { padding: 80px 24px; }
+      .hero { padding: 120px 24px 60px; }
+      .philosophy { grid-template-columns: 1fr; }
+      .phil-visual { display: none; }
+      .phil-content { padding: 60px 24px; }
+      .buy-grid,.testi-grid { grid-template-columns: 1fr; }
+      .cat-card.medium { grid-column: span 12; }
+      footer { grid-template-columns: 1fr; gap: 40px; }
+      .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+      .detail-nav { padding: 16px 24px; }
+      .detail-info { padding: 40px 24px; }
+      .detail-tabs-section { padding: 0 24px 60px; }
+      .benefits-grid { grid-template-columns: 1fr; }
+      .related-grid { grid-template-columns: repeat(2,1fr); }
+      .related-section { padding: 60px 24px; }
+      .detail-purchase { flex-wrap: wrap; }
+      .detail-trust { flex-direction: column; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav id="main-nav">
+  <a class="nav-logo" onclick="goHome()">XTREME<span>.</span></a>
+  <ul class="nav-links">
+    <li><a onclick="goHome();scrollToSection('productos')">Productos</a></li>
+    <li><a onclick="goHome();scrollToSection('filosofia')">Filosofía</a></li>
+    <li><a onclick="goHome();scrollToSection('comprar')">Cómo comprar</a></li>
+    <li><a onclick="goHome();scrollToSection('testimonios')">Resultados</a></li>
+  </ul>
+  <button class="nav-cta" onclick="goHome();scrollToSection('productos')">Tienda</button>
+</nav>
+
+<!-- ===== MAIN SITE ===== -->
+<div id="main-site">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content reveal">
+      <div class="hero-eyebrow">Rendimiento sin excusas</div>
+      <h1 class="hero-title">Desata tu <span class="accent">potencial</span></h1>
+      <p class="hero-subtitle">Nutrición deportiva diseñada para atletas que exigen más. Sin rellenos, dosis reales, resultados extremos.</p>
+      <div class="hero-actions">
+        <a href="#productos" class="btn-primary">Ver Catálogo</a>
+        <a href="#filosofia" class="btn-outline">Nuestra Filosofía</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- BRAND BAR -->
+  <div class="brand-bar">
+    <div class="brand-track">
+      <span class="brand-item">Proteína Whey</span><span class="brand-item">Creatina Monohidrato</span>
+      <span class="brand-item">Colágeno Marino</span><span class="brand-item">Vitamina D3 + K2</span>
+      <span class="brand-item">Pre-Workout</span><span class="brand-item">BCAA's</span>
+      <span class="brand-item">Omega 3</span><span class="brand-item">Multivitamínico</span>
+      <span class="brand-item">Proteína Whey</span><span class="brand-item">Creatina Monohidrato</span>
+      <span class="brand-item">Colágeno Marino</span><span class="brand-item">Vitamina D3 + K2</span>
+      <span class="brand-item">Pre-Workout</span><span class="brand-item">BCAA's</span>
+      <span class="brand-item">Omega 3</span><span class="brand-item">Multivitamínico</span>
+    </div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <section class="products" id="productos">
+    <div class="products-header">
+      <div>
+        <div class="section-label reveal">Catálogo Oficial</div>
+        <h2 class="section-title reveal">Lo Esencial</h2>
+      </div>
+      <div class="products-filter reveal">
+        <button class="filter-btn active" data-filter="all">Todos</button>
+        <button class="filter-btn" data-filter="proteína">Proteína</button>
+        <button class="filter-btn" data-filter="fuerza">Creatina</button>
+        <button class="filter-btn" data-filter="bienestar">Bienestar</button>
+      </div>
+    </div>
+    <div class="products-grid" id="products-grid"></div>
+  </section>
+
+  <!-- CATEGORIES -->
+  <section style="background:var(--dark);">
+    <div class="section-label reveal">Explora por meta</div>
+    <h2 class="section-title reveal">Tus Objetivos</h2>
+    <div class="cat-grid">
+      <div class="cat-card large reveal">
+        <div class="cat-bg"><img src="img_masa.png" alt="Ganar masa muscular"></div>
+        <div class="cat-info">
+          <div class="cat-label">Stack completo</div>
+          <div class="cat-name">Ganar Masa</div>
+          <div class="cat-sub">Fórmula de crecimiento extremo</div>
+        </div>
+      </div>
+      <div class="cat-card medium reveal">
+        <div class="cat-bg"><img src="img_definicion.png" alt="Definición muscular"></div>
+        <div class="cat-info">
+          <div class="cat-label">Pérdida de grasa</div>
+          <div class="cat-name">Definición</div>
+          <div class="cat-sub">Quema optimizada</div>
+        </div>
+      </div>
+      <div class="cat-card medium reveal">
+        <div class="cat-bg"><img src="img_energia.png" alt="Energía y rendimiento"></div>
+        <div class="cat-info">
+          <div class="cat-label">Rendimiento</div>
+          <div class="cat-name">Energía</div>
+          <div class="cat-sub">Enfoque y resistencia</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHILOSOPHY -->
+  <div class="philosophy" id="filosofia">
+    <div class="phil-visual">
+      <div class="phil-visual-text">SUDOR & DISCIPLINA</div>
+      <div class="phil-img-placeholder">
+        <img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&w=600&q=80" alt="Atleta entrenando" loading="lazy" onerror="this.parentElement.style.background='#1a1a1a'">
+      </div>
+    </div>
+    <div class="phil-content">
+      <div class="section-label reveal">Nuestro Ethos</div>
+      <h2 class="phil-quote reveal">El trabajo duro <em>no es negociable.</em></h2>
+      <p class="phil-text reveal">En Xtreme no vendemos atajos. Vendemos herramientas para quienes ya pusieron el trabajo. La suplementación correcta no reemplaza el esfuerzo, lo recompensa de forma definitiva.</p>
+      <div class="phil-pillars reveal">
+        <div class="pillar">
+          <div class="pillar-icon">1</div>
+          <div>
+            <div class="pillar-name">Fórmulas Transparentes</div>
+            <div class="pillar-desc">Dosis completas, sin ingredientes ocultos. Lo que ves en la etiqueta es lo que obtienes.</div>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">2</div>
+          <div>
+            <div class="pillar-name">Calidad Clínica</div>
+            <div class="pillar-desc">Testados en laboratorios para garantizar pureza absoluta y máxima absorción.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW TO BUY -->
+  <section id="comprar">
+    <div class="section-label reveal">Experiencia Premium</div>
+    <h2 class="section-title reveal">Consigue tu Stack</h2>
+    <div class="buy-grid">
+      <div class="buy-card reveal">
+        <div class="buy-icon">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M8 4H16C17.1 4 18 4.9 18 6V18C18 19.1 17.1 20 16 20H8C6.9 20 6 19.1 6 18V6C6 4.9 6.9 4 8 4Z" stroke="currentColor" stroke-width="1.8"/><path d="M10 7H14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="17" r="1" fill="currentColor"/></svg>
+        </div>
+        <div class="buy-title">Compra Rápida</div>
+        <p class="buy-desc">Haz tu pedido directo en línea o a través de WhatsApp. Sistema fluido, sin esperas innecesarias.</p>
+      </div>
+      <div class="buy-card reveal">
+        <div class="buy-icon">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M3 7H15V17H3V7Z" stroke="currentColor" stroke-width="1.8"/><path d="M15 10H19L21 13V17H15V10Z" stroke="currentColor" stroke-width="1.8"/><circle cx="7.5" cy="17.5" r="1.5" stroke="currentColor" stroke-width="1.8"/><circle cx="17.5" cy="17.5" r="1.5" stroke="currentColor" stroke-width="1.8"/></svg>
+        </div>
+        <div class="buy-title">Envío Express</div>
+        <p class="buy-desc">Despacho garantizado en 24h. Entregas locales el mismo día para que nunca detengas tu rutina.</p>
+      </div>
+      <div class="buy-card reveal">
+        <div class="buy-icon">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 3L19 6V11C19 16 15.5 19 12 21C8.5 19 5 16 5 11V6L12 3Z" stroke="currentColor" stroke-width="1.8"/><path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="buy-title">Garantía Xtreme</div>
+        <p class="buy-desc">Si no estás satisfecho con la calidad de tu producto, te devolvemos el dinero. Así de seguros estamos.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials" id="testimonios">
+    <div class="section-label reveal">Comunidad Xtreme</div>
+    <h2 class="section-title reveal">Testimonios</h2>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"Desde que empecé con la creatina y el whey de Xtreme, mis marcas subieron radicalmente. El pre-workout es energía limpia sin crash."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">👨</div>
+          <div><div class="testi-name">Carlos M.</div><div class="testi-role">Powerlifter</div></div>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"La digestión de la proteína es impecable. He probado muchísimas marcas, pero la transparencia de Xtreme me dio la confianza que buscaba."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">👩</div>
+          <div><div class="testi-name">Andrea L.</div><div class="testi-role">Atleta CrossFit</div></div>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"El colágeno marino me ayudó a recuperar mis articulaciones más rápido. La calidad justifica totalmente la inversión."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">👨</div>
+          <div><div class="testi-name">Roberto T.</div><div class="testi-role">Culturista Amateur</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <div class="cta-banner">
+    <h2 class="cta-title">¿Listo para empezar?</h2>
+    <p class="cta-sub">Únete a miles de atletas que ya elevaron su nivel. Compra hoy y obtén un 10% de descuento en tu primer stack completo.</p>
+    <a href="#productos" class="btn-dark">Comprar Ahora</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>
+      <div class="footer-brand-name">XTREME.</div>
+      <p class="footer-tagline">Equipando atletas con la mejor nutrición del mercado. Rendimiento y transparencia.</p>
+      <div class="footer-social">
+        <a href="#" class="social-btn">Ig</a>
+        <a href="#" class="social-btn">Fb</a>
+        <a href="#" class="social-btn">Yt</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Comprar</div>
+      <div class="footer-links">
+        <a href="#">Proteínas</a><a href="#">Creatina</a>
+        <a href="#">Aminoácidos</a><a href="#">Accesorios</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Soporte</div>
+      <div class="footer-links">
+        <a href="#">Centro de ayuda</a><a href="#">Rastrear pedido</a>
+        <a href="#">Devoluciones</a><a href="#">Contacto</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Comunidad</div>
+      <div class="footer-links">
+        <a href="#">Blog Oficial</a><a href="#">Embajadores</a>
+        <a href="#">Eventos Xtreme</a>
+      </div>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 XtremeGym. Todos los derechos reservados.</div>
+    <div class="footer-copy">Términos · Privacidad · Accesibilidad</div>
+  </div>
+
+</div><!-- end #main-site -->
+
+<!-- ===== PRODUCT DETAIL PAGE ===== -->
+<div id="product-detail-page">
+  <div class="detail-nav">
+    <button class="detail-back" onclick="goHome()">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Volver al catálogo
+    </button>
+    <div class="detail-breadcrumb">XTREME › <span id="detail-breadcrumb-name">Producto</span></div>
+    <div style="width:160px"></div>
+  </div>
+
+  <div class="detail-hero">
+    <div class="detail-visual">
+      <div class="detail-visual-bg"></div>
+      <div class="detail-visual-label" id="detail-visual-label">XTREME</div>
+      <div class="detail-product-svg-wrap" id="detail-svg-wrap"><!-- SVG injected --></div>
+      <div class="detail-badge-wrap" id="detail-badge-wrap"></div>
+    </div>
+
+    <div class="detail-info">
+      <div class="detail-category" id="detail-category">Categoría</div>
+      <h1 class="detail-name" id="detail-name">Nombre Producto</h1>
+      <div class="detail-rating">
+        <div class="detail-stars">★★★★★</div>
+        <div class="detail-rating-count" id="detail-rating-count">0 reseñas</div>
+      </div>
+      <div class="detail-price-wrap">
+        <div class="detail-price" id="detail-price">$0</div>
+        <div class="detail-price-sub" id="detail-price-sub">USD · Precio por unidad</div>
+      </div>
+      <div class="detail-short-desc" id="detail-short-desc">Descripción corta</div>
+
+      <div class="detail-variants" id="detail-variants-section">
+        <div class="detail-variants-label" id="detail-variants-label">Sabor</div>
+        <div class="variant-options" id="detail-variants"></div>
+      </div>
+
+      <div class="detail-purchase">
+        <div class="qty-control">
+          <button class="qty-btn" onclick="changeQty(-1)">−</button>
+          <div class="qty-display" id="qty-display">1</div>
+          <button class="qty-btn" onclick="changeQty(1)">+</button>
+        </div>
+        <button class="btn-add-cart" onclick="addToCart()">Agregar al Carrito</button>
+        <button class="btn-wishlist">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+      <div class="detail-trust">
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 3L19 6V11C19 16 15.5 19 12 21C8.5 19 5 16 5 11V6L12 3Z" stroke="currentColor" stroke-width="1.8"/><path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          Garantía 30 días
+        </div>
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M3 7H15V17H3V7Z" stroke="currentColor" stroke-width="1.8"/><path d="M15 10H19L21 13V17H15V10Z" stroke="currentColor" stroke-width="1.8"/><circle cx="7.5" cy="17.5" r="1.5" stroke="currentColor" stroke-width="1.8"/><circle cx="17.5" cy="17.5" r="1.5" stroke="currentColor" stroke-width="1.8"/></svg>
+          Envío en 24h
+        </div>
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          Lab certificado
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="detail-tabs-section" style="padding-top:64px;">
+    <div class="tab-header">
+      <button class="tab-btn active" onclick="switchTab('descripcion',this)">Descripción</button>
+      <button class="tab-btn" onclick="switchTab('beneficios',this)">Beneficios</button>
+      <button class="tab-btn" onclick="switchTab('como-usar',this)">Cómo Usar</button>
+      <button class="tab-btn" onclick="switchTab('nutricion',this)">Información Nutricional</button>
+    </div>
+
+    <div class="tab-panel active" id="tab-descripcion"></div>
+    <div class="tab-panel" id="tab-beneficios"></div>
+    <div class="tab-panel" id="tab-como-usar"></div>
+    <div class="tab-panel" id="tab-nutricion"></div>
+  </div>
+
+  <!-- RELATED PRODUCTS -->
+  <div class="related-section">
+    <div class="related-title">También te puede interesar</div>
+    <div class="related-sub">Completa tu stack con estos productos</div>
+    <div class="related-grid" id="related-grid"></div>
+  </div>
+
+</div><!-- end #product-detail-page -->
+
+<!-- CART TOAST -->
+<div class="cart-toast" id="cart-toast">
+  <svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <span id="toast-text">¡Agregado al carrito!</span>
+</div>
+
+<script>
+// ===========================
+// PRODUCT DATA
+// ===========================
+const PRODUCTS = [
+  {
+    id: 'whey',
+    name: 'Whey Gold Protein',
+    category: 'Proteína',
+    filterTag: 'proteína',
+    price: '$45',
+    priceSub: 'USD · 2.27 kg · 73 servicios',
+    badge: 'Top Ventas',
+    badgeType: 'sale',
+    rating: 4.9,
+    reviews: 284,
+    shortDesc: 'Proteína de suero de leche de alta concentración. Perfil completo de aminoácidos esenciales con 25g de proteína por servicio y mínimo de grasas e hidratos.',
+    flavors: ['Chocolate', 'Vainilla', 'Fresa', 'Cookies & Cream'],
+    sizes: ['907g / 30 serv.', '1.8kg / 60 serv.', '2.27kg / 73 serv.'],
+    visualLabel: 'WHEY',
+    description: `<p>Whey Gold Protein es la proteína de suero por excelencia, formulada para atletas que no aceptan compromisos. Cada servicio de 31g aporta 25g de proteína pura, con un perfil de aminoácidos completo que incluye todos los esenciales y un alto contenido en BCAAs naturales.</p><p>Procesada mediante microfiltración en frío para preservar las fracciones proteicas bioactivas (lactoferrina, inmunoglobulinas, beta-lactoglobulina), garantizando una absorción superior y un impacto anabólico máximo en la ventana post-entreno.</p><p>Sin rellenos artificiales, sin colorantes ni aditivos innecesarios. Solo proteína de la más alta pureza con una mezcla de enzimas digestivas que potencia la asimilación.</p>`,
+    highlights: [
+      { title: '25g de Proteína', desc: 'Por cada servicio de 31g. Ratio proteína/producto superior al 80%.', icon: 'bolt' },
+      { title: 'Sin Gluten', desc: 'Apto para personas con intolerancia al gluten o celiaquía.', icon: 'shield' },
+      { title: 'Enzimas Digestivas', desc: 'Complejo DigeZyme® para máxima asimilación sin molestias.', icon: 'leaf' },
+    ],
+    benefits: [
+      { title: 'Síntesis muscular', desc: 'Estimula la síntesis de proteína muscular (MPS) de forma óptima en la ventana anabólica post-entreno.', icon: 'muscle' },
+      { title: 'Recuperación rápida', desc: 'Reduce el daño muscular inducido por el ejercicio y acelera la recuperación entre sesiones.', icon: 'recover' },
+      { title: 'Perfil aminoácido', desc: 'Completo espectro de aminoácidos esenciales y no esenciales. Especialmente rico en leucina (2.7g/serv).', icon: 'amino' },
+      { title: 'Control de peso', desc: 'Alto poder saciante. Ideal para mantener masa muscular en déficit calórico.', icon: 'scale' },
+      { title: 'Bajo en grasas', desc: 'Solo 2g de grasa y 3g de carbohidratos por servicio. Perfil limpio para definición.', icon: 'clean' },
+      { title: 'Absorción rápida', desc: 'Disponible en torrente sanguíneo en 20-30 minutos. Ideal inmediatamente post-entrenamiento.', icon: 'fast' },
+    ],
+    howToUse: {
+      steps: [
+        { title: 'Mezcla', desc: 'Agrega 1 medida (31g) en 250-300ml de agua fría o leche. Agita durante 15-20 segundos en shaker.' },
+        { title: 'Momento óptimo', desc: 'Consúmelo dentro de los 30 minutos posteriores a tu entrenamiento para maximizar la síntesis proteica.' },
+        { title: 'Dosis diaria', desc: 'Puedes tomar 1-2 servicios al día según tus necesidades proteicas totales y objetivos.' },
+      ],
+      serving: '31g (1 medida)',
+      timing: 'Post-entrenamiento',
+      perDay: '1-2 servicios',
+      stackWith: 'Creatina Monohidrato + BCAA',
+    },
+    nutrition: [
+      { label: 'Calorías', value: '120 kcal', dv: '' },
+      { label: 'Proteínas', value: '25g', dv: '50%', bold: true },
+      { label: 'Carbohidratos', value: '3g', dv: '1%' },
+      { label: '  Azúcares', value: '1g', dv: '', sub: true },
+      { label: 'Grasas totales', value: '2g', dv: '3%' },
+      { label: '  Saturadas', value: '0.5g', dv: '', sub: true },
+      { label: 'Sodio', value: '130mg', dv: '6%' },
+      { label: 'Leucina', value: '2.7g', dv: '', bold: true },
+      { label: 'BCAA totales', value: '5.5g', dv: '', bold: true },
+    ],
+    ingredients: 'Concentrado de proteína de suero de leche, aislado de proteína de suero, cacao en polvo (en sabor chocolate), edulcorante (sucralosa), sal, complejo enzimático DigeZyme® (amilasa, proteasa, lipasa, celulasa, lactasa).',
+    servingSize: '31g',
+    relatedIds: ['creatina', 'bcaa', 'preworkout'],
+  },
+  {
+    id: 'creatina',
+    name: 'Creatina Monohidrato',
+    category: 'Fuerza',
+    filterTag: 'fuerza',
+    price: '$22',
+    priceSub: 'USD · 300g · 60 servicios',
+    badge: 'Esencial',
+    badgeType: 'white',
+    rating: 4.8,
+    reviews: 412,
+    shortDesc: 'Creatina monohidrato micronizada de grado farmacéutico. El suplemento más respaldado por la ciencia para aumentar fuerza, potencia y masa muscular magra.',
+    flavors: ['Sin sabor'],
+    sizes: ['300g / 60 serv.', '500g / 100 serv.'],
+    visualLabel: 'CREATINA',
+    description: `<p>La Creatina Monohidrato Xtreme utiliza creatina micronizada de grado Creapure®, el estándar de oro de la industria. Su partícula ultra-fina garantiza máxima disolución y absorción sin los residuos granulados de versiones inferiores.</p><p>Más de 500 estudios científicos avalan la creatina monohidrato como el suplemento más efectivo y seguro para aumentar el rendimiento en ejercicios de alta intensidad. Aumenta los depósitos de fosfocreatina muscular, acelerando la regeneración de ATP durante el esfuerzo.</p><p>Fórmula 100% pura, sin aditivos, colorantes ni edulcorantes. Se mezcla perfectamente con cualquier bebida sin alterar su sabor.</p>`,
+    highlights: [
+      { title: '100% Creapure®', desc: 'La creatina certificada más pura del mercado, fabricada en Alemania con controles estrictos.', icon: 'shield' },
+      { title: 'Micronizada', desc: 'Partículas 20x más finas que creatina estándar. Disolución perfecta, sin sedimentos.', icon: 'bolt' },
+      { title: 'Pura al 99.9%', desc: 'Libre de contaminantes, metales pesados y subproductos como DKP.', icon: 'leaf' },
+    ],
+    benefits: [
+      { title: 'Fuerza máxima', desc: 'Incrementa la fuerza en ejercicios de alta intensidad hasta un 15% en estudios controlados.', icon: 'muscle' },
+      { title: 'Potencia explosiva', desc: 'Mejora el rendimiento en sprints, saltos y movimientos explosivos al recargar el ATP más rápido.', icon: 'bolt' },
+      { title: 'Masa muscular magra', desc: 'Aumenta la retención de agua intracelular muscular, favoreciendo el anabolismo y el volumen muscular.', icon: 'amino' },
+      { title: 'Resistencia al fatiga', desc: 'Retrasa la aparición de fatiga muscular, permitiendo más repeticiones en cada serie.', icon: 'recover' },
+      { title: 'Neuroprotección', desc: 'Evidencia emergente sobre beneficios cognitivos y neuroprotectores, especialmente bajo estrés físico.', icon: 'clean' },
+      { title: 'Segura y probada', desc: 'El suplemento deportivo más estudiado de la historia. Segura para uso continuo a largo plazo.', icon: 'shield' },
+    ],
+    howToUse: {
+      steps: [
+        { title: 'Carga (opcional)', desc: 'Semana 1: 20g/día divididos en 4 tomas de 5g con comidas para saturar los depósitos musculares.' },
+        { title: 'Mantenimiento', desc: 'A partir de la semana 2: 3-5g diarios en cualquier momento del día, idealmente post-entrenamiento.' },
+        { title: 'Sin ciclos', desc: 'Puedes tomarla de forma continua. No es necesario hacer descansos. Mezcla con jugos o proteína.' },
+      ],
+      serving: '5g (1 medida)',
+      timing: 'Cualquier momento (preferible post-entreno)',
+      perDay: '1 servicio (3-5g)',
+      stackWith: 'Whey Gold Protein + Pre-Workout',
+    },
+    nutrition: [
+      { label: 'Calorías', value: '0 kcal', dv: '' },
+      { label: 'Creatina Monohidrato', value: '5g', dv: '', bold: true },
+      { label: 'Proteínas', value: '0g', dv: '' },
+      { label: 'Carbohidratos', value: '0g', dv: '' },
+      { label: 'Grasas', value: '0g', dv: '' },
+      { label: 'Sodio', value: '0mg', dv: '' },
+    ],
+    ingredients: 'Creatina monohidrato micronizada (Creapure®). Producto de un solo ingrediente.',
+    servingSize: '5g',
+    relatedIds: ['whey', 'preworkout', 'bcaa'],
+  },
+  {
+    id: 'colageno',
+    name: 'Colágeno Marino + C',
+    category: 'Recuperación',
+    filterTag: 'bienestar',
+    price: '$35',
+    priceSub: 'USD · 120 cápsulas · 30 servicios',
+    badge: null,
+    rating: 4.7,
+    reviews: 198,
+    shortDesc: 'Colágeno marino hidrolizado tipo I y III con vitamina C para máxima síntesis. Cuida tus articulaciones, tendones, piel y tejido conectivo desde adentro.',
+    flavors: ['Cápsulas'],
+    sizes: ['120 cáps. / 30 serv.', '240 cáps. / 60 serv.'],
+    visualLabel: 'COLÁGENO',
+    description: `<p>El Colágeno Marino + C de Xtreme combina colágeno hidrolizado de origen marino (pescado de aguas profundas) tipos I y III, con vitamina C en forma de ascorbato de sodio para maximizar la síntesis endógena de colágeno.</p><p>El colágeno marino tiene la mayor biodisponibilidad de todas las fuentes (1.5x superior al colágeno bovino), con un tamaño de péptido ultra-pequeño que garantiza absorción intestinal completa y llegada directa a articulaciones, tendones y piel.</p><p>Especialmente formulado para atletas sometidos a alta carga articular: powerlifters, crossfitters, corredores y cualquier persona que exige mucho a su sistema musculoesquelético.</p>`,
+    highlights: [
+      { title: 'Marino Tipo I+III', desc: 'Fuente de mayor biodisponibilidad. Péptidos de bajo peso molecular para absorción máxima.', icon: 'shield' },
+      { title: 'Con Vitamina C', desc: 'Cofactor esencial para la síntesis de colágeno. Sin vitamina C, el colágeno no se sintetiza correctamente.', icon: 'leaf' },
+      { title: 'Sin sabor a pescado', desc: 'Proceso de desodorización avanzado. Cápsulas cómodas y sin aftertaste.', icon: 'clean' },
+    ],
+    benefits: [
+      { title: 'Articulaciones', desc: 'Restaura el cartílago y reduce el dolor articular asociado a la actividad física intensa.', icon: 'recover' },
+      { title: 'Tendones y ligamentos', desc: 'Fortalece el tejido conectivo, previniendo lesiones comunes en deportistas de alto rendimiento.', icon: 'muscle' },
+      { title: 'Salud de la piel', desc: 'Reduce la apariencia de arrugas, mejora la elasticidad y la hidratación cutánea.', icon: 'clean' },
+      { title: 'Cabello y uñas', desc: 'Estimula el crecimiento del cabello y fortalece las uñas frágiles con uso continuado.', icon: 'leaf' },
+      { title: 'Masa ósea', desc: 'El colágeno tipo I es el componente principal del tejido óseo. Contribuye a la densidad mineral.', icon: 'shield' },
+      { title: 'Intestino permeable', desc: 'La glicina y prolina del colágeno ayudan a reparar y mantener la mucosa intestinal.', icon: 'amino' },
+    ],
+    howToUse: {
+      steps: [
+        { title: 'Dosis diaria', desc: 'Toma 4 cápsulas al día con un vaso de agua. El servicio aporta 3.000mg de colágeno marino hidrolizado.' },
+        { title: 'Momento ideal', desc: 'Con el estómago vacío (mañana en ayunas) o 30-60 minutos antes del entrenamiento para máxima llegada articular.' },
+        { title: 'Constancia', desc: 'Los beneficios del colágeno son acumulativos. Resultados visibles a partir de 8-12 semanas de uso continuo.' },
+      ],
+      serving: '4 cápsulas (3.000mg colágeno)',
+      timing: 'Ayunas o pre-entrenamiento',
+      perDay: '4 cápsulas',
+      stackWith: 'Vitamina D3+K2 + Omega 3',
+    },
+    nutrition: [
+      { label: 'Calorías', value: '12 kcal', dv: '' },
+      { label: 'Colágeno Marino Hidrolizado', value: '3.000mg', dv: '', bold: true },
+      { label: '  Tipo I', value: '~70%', dv: '', sub: true },
+      { label: '  Tipo III', value: '~30%', dv: '', sub: true },
+      { label: 'Vitamina C (ascorbato)', value: '80mg', dv: '100%', bold: true },
+      { label: 'Proteínas', value: '2.8g', dv: '' },
+      { label: 'Carbohidratos', value: '0.1g', dv: '' },
+      { label: 'Grasas', value: '0g', dv: '' },
+    ],
+    ingredients: 'Colágeno marino hidrolizado (Peptan®, origen pescado de mar), cápsula de gelatina, vitamina C (ascorbato de sodio), estearato de magnesio (antiaglomerante).',
+    servingSize: '4 cápsulas (4.8g)',
+    relatedIds: ['vitd3', 'whey', 'bcaa'],
+  },
+  {
+    id: 'preworkout',
+    name: 'Xtreme Pre-Workout',
+    category: 'Energía',
+    filterTag: 'proteína',
+    price: '$38',
+    priceSub: 'USD · 300g · 30 servicios',
+    badge: 'Nuevo',
+    badgeType: 'sale',
+    rating: 4.9,
+    reviews: 156,
+    shortDesc: 'Fórmula pre-entrenamiento de máxima potencia. Energía limpia sin crash, foco mental extremo y mayor endurance. Pump brutal sin tingling innecesario.',
+    flavors: ['Fruit Punch', 'Blue Raspberry', 'Sandía'],
+    sizes: ['300g / 30 serv.'],
+    visualLabel: 'ENERGY',
+    description: `<p>Xtreme Pre-Workout es la fórmula de pre-entrenamiento más avanzada de nuestra línea. Diseñada para darte energía real y sostenida, foco mental de alta precisión y un pump vasodilatador que se nota desde la primera serie.</p><p>La fórmula combina cafeína de liberación dual (cafeína anhidra + cafeína natural de guaraná) para un onset rápido y sin crash. La L-citrulina malato al 2:1 a dosis completa (6g) maximiza la producción de óxido nítrico y el flujo sanguíneo muscular.</p><p>Sin beta-alanina excesiva que genere ese tingling molesto. Toda la energía, cero parestesia. Fórmula transparente: ves exactamente lo que tomas en cada servicio.</p>`,
+    highlights: [
+      { title: 'Cafeína Dual', desc: '150mg cafeína anhidra + 100mg de guaraná natural. Energía sostenida 4-5 horas sin bajón.', icon: 'bolt' },
+      { title: '6g L-Citrulina', desc: 'Dosis clínica completa de L-citrulina malato 2:1 para máximo pump y rendimiento aeróbico.', icon: 'muscle' },
+      { title: 'Sin Crash', desc: 'L-teanina (200mg) modula la cafeína para un estado de alerta limpio y relajado.', icon: 'clean' },
+    ],
+    benefits: [
+      { title: 'Energía explosiva', desc: 'Activación inmediata en 20-30 minutos. Sostenida durante toda la sesión sin picos ni bajones bruscos.', icon: 'bolt' },
+      { title: 'Foco mental', desc: 'Claridad mental máxima. La combinación cafeína+teanina produce un estado de alerta relajado y concentrado.', icon: 'clean' },
+      { title: 'Pump vasodilatador', desc: 'La L-citrulina aumenta el flujo sanguíneo, generando un pump muscular intenso y una mayor entrega de nutrientes.', icon: 'muscle' },
+      { title: 'Mayor resistencia', desc: 'La beta-alanina tamponada retrasa la fatiga y permite entrenar con mayor volumen e intensidad.', icon: 'recover' },
+      { title: 'Fuerza aumentada', desc: 'La betaína anhidra (1.5g) potencia la síntesis de creatina endógena y mejora la producción de fuerza.', icon: 'scale' },
+      { title: 'Sin crash', desc: 'Sin colapso energético post-sesión. Mantén el nivel de energía para el resto de tu día.', icon: 'fast' },
+    ],
+    howToUse: {
+      steps: [
+        { title: 'Tolerancia', desc: 'La primera vez comienza con media medida (5g) para evaluar tu tolerancia a la cafeína y demás activos.' },
+        { title: 'Preparación', desc: 'Mezcla 1 medida (10g) en 250-300ml de agua fría. Agita bien en shaker durante 20-30 segundos.' },
+        { title: 'Timing', desc: 'Consúmelo 20-30 minutos antes de comenzar el entrenamiento para que los activos estén en pleno pico.' },
+      ],
+      serving: '10g (1 medida)',
+      timing: '20-30 min antes del entrenamiento',
+      perDay: '1 servicio máximo',
+      stackWith: 'Creatina Monohidrato + BCAA',
+    },
+    nutrition: [
+      { label: 'Calorías', value: '15 kcal', dv: '' },
+      { label: 'L-Citrulina Malato 2:1', value: '6.000mg', dv: '', bold: true },
+      { label: 'Beta-Alanina', value: '2.000mg', dv: '', bold: true },
+      { label: 'Betaína Anhidra', value: '1.500mg', dv: '', bold: true },
+      { label: 'Cafeína Anhidra', value: '150mg', dv: '', bold: true },
+      { label: 'L-Teanina', value: '200mg', dv: '', bold: true },
+      { label: 'Extracto de Guaraná', value: '200mg', dv: '' },
+      { label: 'Carbohidratos', value: '2g', dv: '' },
+      { label: 'Sodio', value: '90mg', dv: '4%' },
+    ],
+    ingredients: 'L-citrulina malato (2:1), beta-alanina, betaína anhidra, cafeína anhidra, L-teanina, extracto de guaraná estandarizado (22% cafeína), ácido cítrico, aromas naturales, colorante rojo remolacha, sucralosa, silicato de magnesio.',
+    servingSize: '10g',
+    relatedIds: ['creatina', 'whey', 'bcaa'],
+  },
+  {
+    id: 'vitd3',
+    name: 'Vitamina D3 + K2',
+    category: 'Salud Integral',
+    filterTag: 'bienestar',
+    price: '$28',
+    priceSub: 'USD · 90 softgels · 90 servicios',
+    badge: null,
+    rating: 4.8,
+    reviews: 321,
+    shortDesc: 'Duo sinérgico de vitamina D3 (colecalciferol 2000 UI) + K2 MK-7 (menaquinona). Salud ósea, inmunidad, función hormonal y rendimiento atlético completo.',
+    flavors: ['Softgel'],
+    sizes: ['90 softgels / 90 serv.', '180 softgels / 180 serv.'],
+    visualLabel: 'VITD3',
+    description: `<p>La combinación vitamina D3 + K2 es una de las más inteligentes que existe en nutrición deportiva y salud general. La D3 en su forma activa colecalciferol actúa como hormona en más de 200 procesos fisiológicos distintos, incluyendo absorción de calcio, función inmune, síntesis de testosterona y rendimiento muscular.</p><p>La K2 en forma MK-7 (la de mayor biodisponibilidad y vida media) activa las proteínas que dirigen el calcio absorbido hacia los huesos y lejos de las arterias y tejidos blandos, maximizando la mineralización ósea y protegiendo el sistema cardiovascular.</p><p>En aceite de oliva virgen extra para máxima absorción de estas vitaminas liposolubles.</p>`,
+    highlights: [
+      { title: 'D3 Colecalciferol', desc: '2000 UI de la forma más biodisponible y activa de vitamina D, equivalente a la síntesis solar.', icon: 'bolt' },
+      { title: 'K2 MK-7 Natural', desc: 'Menaquinona-7 de natto, con vida media de 72h. La forma más efectiva y duradera de vitamina K2.', icon: 'leaf' },
+      { title: 'En aceite de oliva', desc: 'Base lipídica para absorción óptima de estas vitaminas 100% liposolubles.', icon: 'clean' },
+    ],
+    benefits: [
+      { title: 'Salud ósea', desc: 'La sinergia D3+K2 maximiza la mineralización ósea, reduciendo riesgo de osteoporosis y fracturas por estrés.', icon: 'shield' },
+      { title: 'Sistema inmune', desc: 'La vitamina D es un inmunomodulador esencial. Déficit = mayor susceptibilidad a enfermedades.', icon: 'recover' },
+      { title: 'Función hormonal', desc: 'La D3 es precursora de la testosterona. Niveles óptimos se correlacionan con mayor producción androgénica.', icon: 'muscle' },
+      { title: 'Rendimiento muscular', desc: 'Mejora la función muscular, la coordinación neuromuscular y reduce la fatiga crónica.', icon: 'bolt' },
+      { title: 'Salud cardiovascular', desc: 'La K2 activa la proteína GLA matricial, previniendo la calcificación arterial.', icon: 'clean' },
+      { title: 'Estado de ánimo', desc: 'La vitamina D regula la síntesis de serotonina. Niveles óptimos mejoran el estado anímico y el sueño.', icon: 'leaf' },
+    ],
+    howToUse: {
+      steps: [
+        { title: 'Dosis estándar', desc: 'Toma 1 softgel al día con tu comida más abundante (preferiblemente con grasas para maximizar absorción).' },
+        { title: 'Con comida', desc: 'Al ser vitaminas liposolubles, necesitan estar acompañadas de grasa para absorberse correctamente.' },
+        { title: 'Consistencia', desc: 'Los niveles séricos de vitamina D tardan 6-8 semanas en optimizarse. Úsalo de forma continua.' },
+      ],
+      serving: '1 softgel',
+      timing: 'Con comida (que contenga grasas)',
+      perDay: '1 softgel',
+      stackWith: 'Colágeno Marino + Omega 3',
+    },
+    nutrition: [
+      { label: 'Calorías', value: '5 kcal', dv: '' },
+      { label: 'Vitamina D3 (Colecalciferol)', value: '2.000 UI (50mcg)', dv: '1000%', bold: true },
+      { label: 'Vitamina K2 (MK-7)', value: '100mcg', dv: '133%', bold: true },
+      { label: 'Grasas totales', value: '0.5g', dv: '1%' },
+      { label: '  Monoinsaturadas', value: '0.4g', dv: '', sub: true },
+      { label: 'Sodio', value: '0mg', dv: '' },
+    ],
+    ingredients: 'Aceite de oliva virgen extra, gelatina (cápsula), vitamina D3 (colecalciferol), vitamina K2 (menaquinona-7, origen natto), glicerina, agua purificada.',
+    servingSize: '1 softgel (1.2g)',
+    relatedIds: ['colageno', 'bcaa', 'whey'],
+  },
+  {
+    id: 'bcaa',
+    name: 'BCAA 2:1:1 + Glutamina',
+    category: 'Rendimiento',
+    filterTag: 'proteína',
+    price: '$36',
+    priceSub: 'USD · 400g · 40 servicios',
+    badge: null,
+    rating: 4.7,
+    reviews: 243,
+    shortDesc: 'Aminoácidos ramificados en ratio 2:1:1 (leucina, isoleucina, valina) más glutamina L-form. Anticatabólico, recuperación acelerada y soporte inmune superior.',
+    flavors: ['Fruit Punch', 'Limón-Lima', 'Sandía Fría'],
+    sizes: ['400g / 40 serv.', '800g / 80 serv.'],
+    visualLabel: 'BCAA',
+    description: `<p>Los BCAAs 2:1:1 de Xtreme combinan los tres aminoácidos de cadena ramificada (leucina, isoleucina, valina) en el ratio más respaldado científicamente, junto con L-glutamina en su forma libre para máxima absorción y aprovechamiento.</p><p>La leucina es el aminoácido más potente para activar la vía mTOR y la síntesis proteica muscular. La isoleucina favorece la captación de glucosa muscular. La valina reduce la fatiga central al competir con el triptófano en la barrera hematoencefálica.</p><p>La glutamina añadida (2g/servicio) es el aminoácido más abundante en el músculo y esencial para la función inmune, especialmente bajo el estrés metabólico del entrenamiento intenso.</p>`,
+    highlights: [
+      { title: 'Ratio Científico 2:1:1', desc: 'El ratio más estudiado y efectivo. Máxima activación de síntesis proteica via leucina.', icon: 'amino' },
+      { title: '+Glutamina L-form', desc: '2g de L-glutamina por servicio para recuperación intestinal, inmunidad y anticatabolismo.', icon: 'recover' },
+      { title: 'Fermentación vegana', desc: 'BCAAs obtenidos por fermentación vegetal, no por hidrólisis de queratina animal.', icon: 'leaf' },
+    ],
+    benefits: [
+      { title: 'Anticatabólico', desc: 'Protege la masa muscular durante entrenamientos largos, en déficit calórico o en ayunas.', icon: 'muscle' },
+      { title: 'Síntesis proteica', desc: 'La leucina activa la vía mTOR directamente, estimulando la síntesis de proteína muscular incluso sin comida.', icon: 'amino' },
+      { title: 'Recuperación', desc: 'Reduce el daño muscular (DOMS), el dolor post-entrenamiento y acelera la recuperación entre sesiones.', icon: 'recover' },
+      { title: 'Resistencia a fatiga', desc: 'La valina reduce la producción de serotonina central durante el ejercicio, retrasando la fatiga mental.', icon: 'bolt' },
+      { title: 'Sistema inmune', desc: 'La glutamina es el principal combustible de los enterocitos y células inmunes. Clave bajo estrés físico.', icon: 'shield' },
+      { title: 'Hidratación activa', desc: 'Electrolitos añadidos (sodio, potasio) para reposición durante el entrenamiento y mejor absorción.', icon: 'fast' },
+    ],
+    howToUse: {
+      steps: [
+        { title: 'Pre o intra-entreno', desc: 'Mezcla 1 medida (10g) en 400-500ml de agua. Puedes tomarlo antes, durante o inmediatamente después del ejercicio.' },
+        { title: 'Intra-workout', desc: 'Si tu sesión supera los 60 minutos, úsalo como bebida intra-workout para proteger músculo y mantener energía.' },
+        { title: 'En ayunas', desc: 'También efectivo tomado en ayunas para proteger músculo antes del cardio matutino o entrenamiento early morning.' },
+      ],
+      serving: '10g (1 medida)',
+      timing: 'Pre, intra o post-entrenamiento',
+      perDay: '1-2 servicios',
+      stackWith: 'Whey Gold Protein + Creatina',
+    },
+    nutrition: [
+      { label: 'Calorías', value: '25 kcal', dv: '' },
+      { label: 'BCAAs totales', value: '6g', dv: '', bold: true },
+      { label: '  L-Leucina (ratio 2)', value: '3g', dv: '', sub: true },
+      { label: '  L-Isoleucina (ratio 1)', value: '1.5g', dv: '', sub: true },
+      { label: '  L-Valina (ratio 1)', value: '1.5g', dv: '', sub: true },
+      { label: 'L-Glutamina', value: '2g', dv: '', bold: true },
+      { label: 'Sodio', value: '110mg', dv: '5%' },
+      { label: 'Potasio', value: '80mg', dv: '2%' },
+      { label: 'Carbohidratos', value: '2g', dv: '1%' },
+    ],
+    ingredients: 'L-leucina (fermentación vegetal), L-isoleucina (fermentación vegetal), L-valina (fermentación vegetal), L-glutamina, cloruro de sodio, gluconato de potasio, aromas naturales, ácido cítrico, sucralosa, colorante beta-caroteno.',
+    servingSize: '10g',
+    relatedIds: ['whey', 'creatina', 'preworkout'],
+  }
+];
+
+// SVG map
+const SVGS = {
+  whey: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 260"><rect x="50" y="55" width="100" height="165" rx="6" fill="#1c1c1c" stroke="#2a2a2a" stroke-width="1.5"/><rect x="44" y="40" width="112" height="22" rx="4" fill="#D91E18"/><rect x="62" y="80" width="76" height="110" rx="3" fill="#111" stroke="#333" stroke-width="1"/><text x="100" y="128" text-anchor="middle" fill="#fff" font-family="Montserrat,sans-serif" font-weight="900" font-size="11" letter-spacing="1">WHEY GOLD</text><text x="100" y="145" text-anchor="middle" fill="#D91E18" font-family="sans-serif" font-weight="700" font-size="8" letter-spacing="2">PROTEIN</text><text x="100" y="162" text-anchor="middle" fill="#666" font-family="sans-serif" font-size="7">2.27 KG · 73 SERVICIOS</text><ellipse cx="100" cy="34" rx="28" ry="7" fill="#b51713"/><line x1="72" y1="215" x2="128" y2="215" stroke="#2a2a2a" stroke-width="1"/><text x="100" y="230" text-anchor="middle" fill="#555" font-family="sans-serif" font-size="7">XTREME NUTRITION</text></svg>`,
+  creatina: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 260"><rect x="50" y="55" width="100" height="165" rx="6" fill="#1c1c1c" stroke="#2a2a2a" stroke-width="1.5"/><rect x="44" y="40" width="112" height="22" rx="4" fill="#fff"/><rect x="62" y="80" width="76" height="110" rx="3" fill="#111" stroke="#333" stroke-width="1"/><text x="100" y="125" text-anchor="middle" fill="#fff" font-family="Montserrat,sans-serif" font-weight="900" font-size="10" letter-spacing="1">CREATINA</text><text x="100" y="141" text-anchor="middle" fill="#D91E18" font-family="sans-serif" font-weight="700" font-size="7" letter-spacing="2">MONOHIDRATO</text><text x="100" y="158" text-anchor="middle" fill="#666" font-family="sans-serif" font-size="7">300 G · MICRONIZADA</text><polygon points="100,90 108,97 105,107 95,107 92,97" fill="none" stroke="#D91E18" stroke-width="1.2"/><circle cx="100" cy="99" r="3" fill="#D91E18"/><ellipse cx="100" cy="34" rx="28" ry="7" fill="#ccc"/><line x1="72" y1="215" x2="128" y2="215" stroke="#2a2a2a" stroke-width="1"/><text x="100" y="230" text-anchor="middle" fill="#555" font-family="sans-serif" font-size="7">XTREME NUTRITION</text></svg>`,
+  colageno: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 260"><rect x="60" y="70" width="80" height="145" rx="10" fill="#1c1c1c" stroke="#2a2a2a" stroke-width="1.5"/><rect x="55" y="52" width="90" height="26" rx="8" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1"/><rect x="70" y="95" width="60" height="90" rx="3" fill="#111" stroke="#2a2a2a" stroke-width="1"/><text x="100" y="132" text-anchor="middle" fill="#fff" font-family="Montserrat,sans-serif" font-weight="900" font-size="9" letter-spacing="1">COLÁGENO</text><text x="100" y="147" text-anchor="middle" fill="#D91E18" font-family="sans-serif" font-weight="700" font-size="7" letter-spacing="1">MARINO + VIT C</text><text x="100" y="163" text-anchor="middle" fill="#666" font-family="sans-serif" font-size="6.5">120 CÁPSULAS</text><ellipse cx="88" cy="119" rx="6" ry="3" fill="#D91E18" transform="rotate(-30,88,119)"/><ellipse cx="100" cy="116" rx="6" ry="3" fill="#fff" opacity="0.3" transform="rotate(-30,100,116)"/><ellipse cx="112" cy="119" rx="6" ry="3" fill="#D91E18" transform="rotate(-30,112,119)"/><text x="100" y="230" text-anchor="middle" fill="#555" font-family="sans-serif" font-size="7">XTREME NUTRITION</text></svg>`,
+  preworkout: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 260"><rect x="55" y="45" width="90" height="175" rx="12" fill="#D91E18"/><rect x="55" y="45" width="90" height="175" rx="12" fill="url(#can-grad2)"/><defs><linearGradient id="can-grad2" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#000;stop-opacity:0.4"/><stop offset="40%" style="stop-color:#000;stop-opacity:0"/><stop offset="100%" style="stop-color:#000;stop-opacity:0.3"/></linearGradient></defs><rect x="55" y="45" width="90" height="15" rx="12" fill="#b51713"/><rect x="55" y="205" width="90" height="15" rx="12" fill="#b51713"/><rect x="62" y="90" width="76" height="90" fill="#000" opacity="0.25" rx="2"/><polygon points="108,100 95,128 103,128 92,155 115,122 106,122 118,100" fill="#fff" opacity="0.95"/><text x="100" y="175" text-anchor="middle" fill="#fff" font-family="Montserrat,sans-serif" font-weight="900" font-size="9" letter-spacing="2">PRE-WORKOUT</text><text x="100" y="188" text-anchor="middle" fill="#ffcccc" font-family="sans-serif" font-size="7">XTREME FORMULA</text><text x="100" y="230" text-anchor="middle" fill="#555" font-family="sans-serif" font-size="7">XTREME NUTRITION</text></svg>`,
+  vitd3: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 260"><rect x="65" y="60" width="70" height="155" rx="8" fill="#1c1c1c" stroke="#2a2a2a" stroke-width="1.5"/><rect x="60" y="44" width="80" height="22" rx="6" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1"/><rect x="72" y="82" width="56" height="100" rx="3" fill="#111" stroke="#222" stroke-width="1"/><circle cx="100" cy="107" r="10" fill="none" stroke="#D91E18" stroke-width="1.5"/><circle cx="100" cy="107" r="5" fill="#D91E18"/><line x1="100" y1="93" x2="100" y2="89" stroke="#D91E18" stroke-width="1.5" stroke-linecap="round"/><line x1="100" y1="121" x2="100" y2="125" stroke="#D91E18" stroke-width="1.5" stroke-linecap="round"/><line x1="86" y1="107" x2="82" y2="107" stroke="#D91E18" stroke-width="1.5" stroke-linecap="round"/><line x1="114" y1="107" x2="118" y2="107" stroke="#D91E18" stroke-width="1.5" stroke-linecap="round"/><line x1="90" y1="97" x2="87" y2="94" stroke="#D91E18" stroke-width="1.2" stroke-linecap="round"/><line x1="110" y1="117" x2="113" y2="120" stroke="#D91E18" stroke-width="1.2" stroke-linecap="round"/><line x1="110" y1="97" x2="113" y2="94" stroke="#D91E18" stroke-width="1.2" stroke-linecap="round"/><line x1="90" y1="117" x2="87" y2="120" stroke="#D91E18" stroke-width="1.2" stroke-linecap="round"/><text x="100" y="137" text-anchor="middle" fill="#fff" font-family="Montserrat,sans-serif" font-weight="900" font-size="9">VIT D3</text><text x="100" y="150" text-anchor="middle" fill="#D91E18" font-family="sans-serif" font-size="7" letter-spacing="1">+ K2 MK-7</text><text x="100" y="164" text-anchor="middle" fill="#666" font-family="sans-serif" font-size="6.5">90 SOFTGELS</text><text x="100" y="230" text-anchor="middle" fill="#555" font-family="sans-serif" font-size="7">XTREME NUTRITION</text></svg>`,
+  bcaa: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 260"><path d="M55,80 Q55,65 70,62 L130,62 Q145,65 145,80 L148,205 Q148,215 138,218 L62,218 Q52,215 52,205 Z" fill="#1c1c1c" stroke="#2a2a2a" stroke-width="1.5"/><rect x="60" y="55" width="80" height="14" rx="4" fill="#D91E18"/><rect x="64" y="85" width="72" height="100" rx="3" fill="#111" stroke="#222" stroke-width="1"/><path d="M90,95 Q100,103 110,95" fill="none" stroke="#D91E18" stroke-width="1.5" stroke-linecap="round"/><path d="M90,105 Q100,113 110,105" fill="none" stroke="#D91E18" stroke-width="1.2" stroke-linecap="round"/><line x1="90" y1="95" x2="90" y2="105" stroke="#555" stroke-width="1"/><line x1="110" y1="95" x2="110" y2="105" stroke="#555" stroke-width="1"/><text x="100" y="126" text-anchor="middle" fill="#fff" font-family="Montserrat,sans-serif" font-weight="900" font-size="12" letter-spacing="1">BCAA</text><text x="100" y="140" text-anchor="middle" fill="#D91E18" font-family="sans-serif" font-weight="700" font-size="7" letter-spacing="1">2:1:1 + GLUTAMINA</text><text x="100" y="155" text-anchor="middle" fill="#666" font-family="sans-serif" font-size="6.5">400 G · FRUIT PUNCH</text><ellipse cx="100" cy="212" rx="40" ry="6" fill="#141414" stroke="#2a2a2a" stroke-width="1"/><text x="100" y="235" text-anchor="middle" fill="#555" font-family="sans-serif" font-size="7">XTREME NUTRITION</text></svg>`,
+};
+
+// Icons for benefits/highlights
+function getIcon(type) {
+  const icons = {
+    muscle: `<svg viewBox="0 0 24 24" fill="none"><path d="M6 4C6 4 4 6 4 9C4 12 6 14 8 14C9 14 10 13.5 10.5 13L11 12.5L12 14L11.5 14.5C10.5 15.5 9 16 8 16C4.5 16 2 13 2 9C2 5 4 3 4 3L6 4Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M18 4C18 4 20 6 20 9C20 12 18 14 16 14C15 14 14 13.5 13.5 13L13 12.5L12 14L12.5 14.5C13.5 15.5 15 16 16 16C19.5 16 22 13 22 9C22 5 20 3 20 3L18 4Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M10.5 13L13.5 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+    recover: `<svg viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" stroke="currentColor" stroke-width="1.8"/><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+    amino: `<svg viewBox="0 0 24 24" fill="none"><circle cx="5" cy="12" r="2" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="6" r="2" stroke="currentColor" stroke-width="1.8"/><circle cx="19" cy="12" r="2" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="18" r="2" stroke="currentColor" stroke-width="1.8"/><path d="M7 12h3M14 12h3M12 8v2M12 14v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+    scale: `<svg viewBox="0 0 24 24" fill="none"><path d="M12 3v1M4 7l2 9h12l2-9M3 7h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 21h8M12 16v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+    clean: `<svg viewBox="0 0 24 24" fill="none"><path d="M12 3L19 6V11C19 16 15.5 19 12 21C8.5 19 5 16 5 11V6L12 3Z" stroke="currentColor" stroke-width="1.8"/><path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    fast: `<svg viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    bolt: `<svg viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    shield: `<svg viewBox="0 0 24 24" fill="none"><path d="M12 3L19 6V11C19 16 15.5 19 12 21C8.5 19 5 16 5 11V6L12 3Z" stroke="currentColor" stroke-width="1.8"/></svg>`,
+    leaf: `<svg viewBox="0 0 24 24" fill="none"><path d="M17 8C8 10 5.9 16.17 3.82 19.34L5.71 21C6.28 20.55 7 20 8 20C14 20 21 13 21 5C21 5 19 8 17 8z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  };
+  return icons[type] || icons.bolt;
+}
+
+// ===========================
+// RENDER CATALOG CARDS
+// ===========================
+function renderCatalog() {
+  const grid = document.getElementById('products-grid');
+  grid.innerHTML = PRODUCTS.map(p => `
+    <div class="product-card reveal" data-id="${p.id}" data-filter="${p.filterTag}" onclick="openProduct('${p.id}')">
+      <div class="product-img-wrap">
+        ${p.badge ? `<div class="product-badge ${p.badgeType === 'sale' ? 'sale' : ''}">${p.badge}</div>` : ''}
+        ${SVGS[p.id]}
+        <div class="product-view-hint">→ Ver Producto</div>
+      </div>
+      <div class="product-info">
+        <div class="product-category">${p.category}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-price">${p.price} <span>USD</span></div>
+      </div>
+    </div>
+  `).join('');
+  initReveal();
+}
+
+// ===========================
+// PRODUCT DETAIL
+// ===========================
+let currentQty = 1;
+
+function openProduct(id) {
+  const p = PRODUCTS.find(x => x.id === id);
+  if (!p) return;
+
+  // Reset qty
+  currentQty = 1;
+  document.getElementById('qty-display').textContent = '1';
+
+  // Breadcrumb
+  document.getElementById('detail-breadcrumb-name').textContent = p.name;
+
+  // Visual
+  document.getElementById('detail-visual-label').textContent = p.visualLabel;
+  document.getElementById('detail-svg-wrap').innerHTML = SVGS[p.id].replace('width="160px" height="220px"', '').replace('class="prod-svg"', '');
+  document.getElementById('detail-badge-wrap').innerHTML = p.badge
+    ? `<div class="detail-badge ${p.badgeType === 'sale' ? '' : 'white'}">${p.badge}</div>` : '';
+
+  // Info
+  document.getElementById('detail-category').textContent = p.category;
+  document.getElementById('detail-name').textContent = p.name;
+  document.getElementById('detail-rating-count').textContent = `${p.reviews} reseñas verificadas`;
+  document.getElementById('detail-price').textContent = p.price;
+  document.getElementById('detail-price-sub').textContent = p.priceSub;
+  document.getElementById('detail-short-desc').textContent = p.shortDesc;
+
+  // Variants
+  const variantLabel = p.id === 'vitd3' || p.id === 'colageno' ? 'Presentación' : 'Sabor';
+  document.getElementById('detail-variants-label').textContent = variantLabel;
+  const varSrc = p.id === 'vitd3' || p.id === 'colageno' ? p.sizes : p.flavors;
+  document.getElementById('detail-variants').innerHTML = varSrc.map((v, i) =>
+    `<button class="variant-btn ${i === 0 ? 'active' : ''}" onclick="selectVariant(this)">${v}</button>`
+  ).join('');
+
+  // Size variants if applicable
+  if (p.sizes && p.sizes.length > 1 && p.id !== 'vitd3' && p.id !== 'colageno') {
+    const sizeSection = `<div class="detail-variants" style="margin-top:16px;">
+      <div class="detail-variants-label">Tamaño</div>
+      <div class="variant-options">${p.sizes.map((s, i) => `<button class="variant-btn ${i === 0 ? 'active' : ''}" onclick="selectVariant(this)">${s}</button>`).join('')}</div>
+    </div>`;
+    document.getElementById('detail-variants-section').insertAdjacentHTML('afterend', sizeSection);
+  }
+
+  // TAB: Descripción
+  document.getElementById('tab-descripcion').innerHTML = `
+    <div class="desc-grid">
+      <div class="desc-text">${p.description}</div>
+      <div class="desc-highlights">
+        ${p.highlights.map(h => `
+          <div class="highlight-row">
+            <div class="highlight-icon">${getIcon(h.icon)}</div>
+            <div>
+              <div class="highlight-title">${h.title}</div>
+              <div class="highlight-desc">${h.desc}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>`;
+
+  // TAB: Beneficios
+  document.getElementById('tab-beneficios').innerHTML = `
+    <div class="benefits-grid">
+      ${p.benefits.map(b => `
+        <div class="benefit-card">
+          <div class="benefit-icon-wrap">${getIcon(b.icon)}</div>
+          <div class="benefit-title">${b.title}</div>
+          <div class="benefit-desc">${b.desc}</div>
+        </div>
+      `).join('')}
+    </div>`;
+
+  // TAB: Cómo usar
+  document.getElementById('tab-como-usar').innerHTML = `
+    <div class="howto-layout">
+      <div class="howto-steps">
+        ${p.howToUse.steps.map((s, i) => `
+          <div class="howto-step">
+            <div class="step-num">0${i + 1}</div>
+            <div>
+              <div class="step-title">${s.title}</div>
+              <div class="step-desc">${s.desc}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      <div class="howto-info">
+        <div class="info-block">
+          <div class="info-block-label">Dosis por servicio</div>
+          <div class="info-block-value">${p.howToUse.serving}</div>
+        </div>
+        <div class="info-block">
+          <div class="info-block-label">Mejor momento</div>
+          <div class="info-block-value" style="font-size:1.1rem">${p.howToUse.timing}</div>
+        </div>
+        <div class="info-block">
+          <div class="info-block-label">Por día</div>
+          <div class="info-block-value">${p.howToUse.perDay}</div>
+        </div>
+        <div class="info-block">
+          <div class="info-block-label">Stack recomendado</div>
+          <div class="info-block-value" style="font-size:1rem">${p.howToUse.stackWith}</div>
+          <div class="info-block-sub">Combina estos productos para resultados máximos</div>
+        </div>
+      </div>
+    </div>`;
+
+  // TAB: Nutrición
+  document.getElementById('tab-nutricion').innerHTML = `
+    <div class="nutrition-layout">
+      <div>
+        <div class="nutrition-table">
+          <div class="nutrition-header-row">Información Nutricional — Porción ${p.servingSize}</div>
+          ${p.nutrition.map(n => `
+            <div class="nutrition-row ${n.sub ? 'sub' : ''}">
+              <span class="nutrition-label ${n.bold ? 'bold' : ''}">${n.label}</span>
+              <div style="display:flex;gap:16px;align-items:center;">
+                <span class="nutrition-value">${n.value}</span>
+                ${n.dv ? `<span class="nutrition-dv">${n.dv} VRN*</span>` : ''}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+        <div class="nutrition-disclaimer">*VRN: Valor de Referencia de Nutrientes para adultos. Los valores son orientativos y pueden variar ligeramente por lote.</div>
+      </div>
+      <div>
+        <div class="ingredients-block">
+          <div class="ingredients-title">Ingredientes</div>
+          <div class="ingredients-text">${p.ingredients}</div>
+        </div>
+        <div class="certifications">
+          <div class="cert-badge">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 3L19 6V11C19 16 15.5 19 12 21C8.5 19 5 16 5 11V6L12 3Z" stroke="currentColor" stroke-width="1.8"/><path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <span class="cert-text">Certificado libre de sustancias dopantes</span>
+          </div>
+          <div class="cert-badge">
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <span class="cert-text">Testado en laboratorio independiente</span>
+          </div>
+          <div class="cert-badge">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <span class="cert-text">Fórmula 100% transparente, sin propietarios ocultos</span>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  // Related products
+  const related = p.relatedIds.map(rid => PRODUCTS.find(x => x.id === rid)).filter(Boolean);
+  document.getElementById('related-grid').innerHTML = related.map(r => `
+    <div class="product-card" onclick="openProduct('${r.id}')" style="cursor:pointer;">
+      <div class="product-img-wrap" style="height:240px">
+        ${r.badge ? `<div class="product-badge ${r.badgeType === 'sale' ? 'sale' : ''}">${r.badge}</div>` : ''}
+        ${SVGS[r.id]}
+        <div class="product-view-hint">→ Ver Producto</div>
+      </div>
+      <div class="product-info">
+        <div class="product-category">${r.category}</div>
+        <div class="product-name">${r.name}</div>
+        <div class="product-price">${r.price} <span>USD</span></div>
+      </div>
+    </div>
+  `).join('');
+
+  // Activate first tab
+  switchTab('descripcion', document.querySelector('.tab-btn'));
+
+  // Open page
+  const page = document.getElementById('product-detail-page');
+  page.classList.add('open');
+  page.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => { document.body.style.overflow = ''; }, 600);
+}
+
+function goHome() {
+  document.getElementById('product-detail-page').classList.remove('open');
+}
+
+function scrollToSection(id) {
+  setTimeout(() => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }, 100);
+}
+
+function selectVariant(btn) {
+  const group = btn.closest('.variant-options');
+  group.querySelectorAll('.variant-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function changeQty(delta) {
+  currentQty = Math.max(1, Math.min(10, currentQty + delta));
+  document.getElementById('qty-display').textContent = currentQty;
+}
+
+function addToCart() {
+  const name = document.getElementById('detail-name').textContent;
+  const toast = document.getElementById('cart-toast');
+  document.getElementById('toast-text').textContent = `${name} agregado (×${currentQty})`;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+function switchTab(tabId, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tabId).classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+
+// ===========================
+// FILTER BUTTONS
+// ===========================
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('#products-grid .product-card').forEach(card => {
+      if (filter === 'all' || card.dataset.filter === filter) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  });
+});
+
+// ===========================
+// SCROLL REVEAL
+// ===========================
+function initReveal() {
+  const reveals = document.querySelectorAll('.reveal:not(.visible)');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => observer.observe(el));
+}
+
+// Nav scroll effect
+const nav = document.querySelector('nav');
+window.addEventListener('scroll', () => {
+  nav.style.background = window.scrollY > 50 ? 'rgba(0,0,0,0.97)' : 'rgba(0,0,0,0.7)';
+});
+
+// ESC to close product page
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') goHome();
+});
+
+// Init
+renderCatalog();
+initReveal();
+</script>
+</body>
+</html>
